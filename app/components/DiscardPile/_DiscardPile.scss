@@ -1,0 +1,15 @@
+.discardPile{
+	box-sizing: border-box;
+	width: 200px;
+	height: 300px;
+	border: 5px dashed black;
+	border-radius: 10px;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	margin-right: 16px;
+}
+
+	.discardPile__title{
+		font-size: 0.8em;
+	}
