@@ -1,6 +1,7 @@
 import { createSelector } from "reselect";
 
 export const getPlayers = (state) => state.players;
+export const getActivePlayerID = (state) => state.activePlayerID;
 
 /**
 *
@@ -14,6 +15,9 @@ export const getPlayersInfluence = createSelector([ getPlayers ], (players)=>{
 	});
 });
 
+/**
+*
+*/
 export const getPlayersDefence = createSelector([ getPlayersInfluence ], (players)=>{
 	return players.map((player)=>{
 		let defence = player.cards.reduce((prev, currentCard, index)=>{
@@ -23,5 +27,18 @@ export const getPlayersDefence = createSelector([ getPlayersInfluence ], (player
 			return prev;
 		}, 0);
 		return { ...player, defence };
+	});
+});
+
+/**
+*
+*/
+export const markActivePlayer = createSelector([ getPlayersDefence, getActivePlayerID ], (players, activePlayerID)=>{
+	return players.map((player)=>{
+		if(player.id === activePlayerID){
+			player.isActive = true;
+		}
+		else player.isActive = false;
+		return player;
 	});
 });

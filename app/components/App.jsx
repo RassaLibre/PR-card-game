@@ -7,12 +7,23 @@ import Deck from "./Deck/Deck";
 import "./_App.scss";
 
 import {
-	getPlayersDefence
+	markActivePlayer
 } from "../selectors";
 
 import {
-	offerCard
+	offerCard,
+	nextPlayer,
+	nextPhase
 } from "../ducks/Game";
+
+/**
+*
+*/
+const onCardClick = (card) => {
+	return function(dispatch, getState){
+
+	}
+}
 
 /**
 *
@@ -31,7 +42,6 @@ class App extends React.Component{
 	*
 	*/
 	render(){
-		console.log(this.props);
 		return(
 			<div className="game">
 				<div className="board">
@@ -45,6 +55,10 @@ class App extends React.Component{
 					{this.props.players.map((player)=>{
 						return (
 							<Player
+								activePhase={this.props.activePhase}
+								onNextPhaseClick={this.props.nextPhase}
+								onNextPlayerClick={this.props.nextPlayer}
+								isActive={player.isActive}
 								defence={player.defence}
 								influence={player.influence}
 								coins={player.coins}
@@ -75,13 +89,15 @@ App.propTypes = {};
 const mapStateToProps = (state) => {
 	return {
 		...state.game,
-		players: getPlayersDefence(state.game)
+		players: markActivePlayer(state.game)
 	};
 };
 
 const mapDispatchToProps = (dispatch) => {
 	return {
-		offerCard: () => dispatch(offerCard())
+		offerCard: () => dispatch(offerCard()),
+		nextPlayer: () => dispatch(nextPlayer()),
+		nextPhase: () => dispatch(nextPhase())
 	};
 };
 
