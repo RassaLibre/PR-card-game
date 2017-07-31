@@ -1,9 +1,13 @@
 import { combineReducers, createStore, applyMiddleware } from 'redux';
-import GameReducer from './ducks/Game';
+import players from './state/players/reducer';
+import cards from './state/cards/reducer';
+import phases from './state/phases/reducer';
 import thunk from 'redux-thunk';
 
 let rootReducer = combineReducers({
-	game: GameReducer
+  players,
+  cards,
+  phases
 });
 
 export default createStore(

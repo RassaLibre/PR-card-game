@@ -1,44 +1,40 @@
 import { createSelector } from "reselect";
 
 export const getPlayers = (state) => state.players;
-export const getActivePlayerID = (state) => state.activePlayerID;
+export const getPhases = (state) => state.getPhases;
 
 /**
 *
 */
-export const getPlayersInfluence = createSelector([ getPlayers ], (players)=>{
+export const getActivePhase = createSelector([ getPhases ], (phases)=>{
+	if(phases.activePhases === 0) return phases.discoverPhase
+	else return phases.tradePhase
+})
+
+/**
+*
+*/
+export const getActivePlayerIndex = createSelector([ getActivePhase ], (activePhase) => activePhase.activePlayerIndex);
+
+/**
+*
+*/
+export const getActivePlayer = createSelector([ getActivePlayerIndex, getPlayers ], (index, players) => players[index] )
+
+/**
+*
+*/
+export const getPlayersComputedValues = createSelector([ getPlayers ], (players)=>{
 	return players.map((player)=>{
-		let influence = player.cards.reduce((prev, currentCard, index)=> {
+		let influence = player.cards.reduce((prev, currentCard, index) => {
 			return prev + currentCard.influence;
 		}, 0);
-		return { ...player, influence };
-	});
-});
-
-/**
-*
-*/
-export const getPlayersDefence = createSelector([ getPlayersInfluence ], (players)=>{
-	return players.map((player)=>{
-		let defence = player.cards.reduce((prev, currentCard, index)=>{
+		let defence = player.cards.reduce((prev, currentCard, index) => {
 			if(currentCard.type === "person" && (currentCard.name === "pirate" || currentCard.name === "sailor")){
 				prev += currentCard.defence;
 			}
 			return prev;
 		}, 0);
-		return { ...player, defence };
+		return { ...player, influence, defence };
 	});
-});
-
-/**
-*
-*/
-export const markActivePlayer = createSelector([ getPlayersDefence, getActivePlayerID ], (players, activePlayerID)=>{
-	return players.map((player)=>{
-		if(player.id === activePlayerID){
-			player.isActive = true;
-		}
-		else player.isActive = false;
-		return player;
-	});
-});
+})

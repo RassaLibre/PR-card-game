@@ -4,17 +4,18 @@ import Player from "./Player/Player";
 import DiscardPile from "./DiscardPile/DiscardPile";
 import OfferedCards from "./OfferedCards/OfferedCards";
 import Deck from "./Deck/Deck";
+import {
+	offerCard
+} from '../state/cards/actions'
 import "./_App.scss";
 
 import {
-	markActivePlayer
+	getPlayersComputedValues
 } from "../selectors";
 
 import {
-	offerCard,
-	nextPlayer,
-	nextPhase
-} from "../ducks/Game";
+	bindActionCreators
+} from 'redux'
 
 /**
 *
@@ -42,29 +43,20 @@ class App extends React.Component{
 	*
 	*/
 	render(){
+		console.log(this.props)
 		return(
 			<div className="game">
 				<div className="board">
 					<DiscardPile/>
 					<Deck
-						amountOfCards={this.props.deck.length}
+						amountOfCards={this.props.cards.deck.length}
 						onClick={this.props.offerCard}/>
-					<OfferedCards cards={this.props.offeredCards}/>
+					<OfferedCards cards={this.props.cards.offeredCards}/>
 				</div>
 				<div className="players">
 					{this.props.players.map((player)=>{
 						return (
-							<Player
-								activePhase={this.props.activePhase}
-								onNextPhaseClick={this.props.nextPhase}
-								onNextPlayerClick={this.props.nextPlayer}
-								isActive={player.isActive}
-								defence={player.defence}
-								influence={player.influence}
-								coins={player.coins}
-								key={player.name}
-								name={player.name}
-								color={player.color}/>
+							<Player key={player.id} player={player}/>
 						);
 					})}
 				</div>
@@ -88,17 +80,16 @@ App.propTypes = {};
 */
 const mapStateToProps = (state) => {
 	return {
-		...state.game,
-		players: markActivePlayer(state.game)
-	};
+		players: getPlayersComputedValues(state),
+		cards: state.cards,
+		phases: state.phases
+	}
 };
 
 const mapDispatchToProps = (dispatch) => {
-	return {
-		offerCard: () => dispatch(offerCard()),
-		nextPlayer: () => dispatch(nextPlayer()),
-		nextPhase: () => dispatch(nextPhase())
-	};
+	return bindActionCreators({
+		offerCard
+	}, dispatch)
 };
 
 /**
