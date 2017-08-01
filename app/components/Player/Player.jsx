@@ -28,6 +28,7 @@ class Player extends React.PureComponent{
 					<li>{defence + " defence"}</li>
 					<li>{influence + " influence"}</li>
 				</ul>
+				{(this.props.isActive) ? <p>Active!</p> : undefined}
 			</div>
 		);
 	}
@@ -38,7 +39,7 @@ class Player extends React.PureComponent{
 *
 */
 Player.defaultProps = {
-
+	isActive: false
 };
 
 /**

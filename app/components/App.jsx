@@ -10,21 +10,21 @@ import {
 import "./_App.scss";
 
 import {
-	getPlayersComputedValues
-} from "../selectors";
+	getPlayersComputedValues,
+	getActivePlayerOfActivePhase
+} from "../state/players/selectors";
+
+import {
+	getActivePhase
+} from "../state/phases/selectors";
+
+import {
+	nextStep
+} from "../state/phases/actions"
 
 import {
 	bindActionCreators
 } from 'redux'
-
-/**
-*
-*/
-const onCardClick = (card) => {
-	return function(dispatch, getState){
-
-	}
-}
 
 /**
 *
@@ -46,6 +46,11 @@ class App extends React.Component{
 		console.log(this.props)
 		return(
 			<div className="game">
+				<span>current phase: </span>
+				<span>{this.props.activePhase.name}</span>
+				<span>Current player: </span>
+				<span>{this.props.activePhase.activePlayer.name}</span>
+				<button onClick={this.props.nextStep}>Next step</button>
 				<div className="board">
 					<DiscardPile/>
 					<Deck
@@ -56,7 +61,10 @@ class App extends React.Component{
 				<div className="players">
 					{this.props.players.map((player)=>{
 						return (
-							<Player key={player.id} player={player}/>
+							<Player
+								isActive={player.id === this.props.activePhase.activePlayer.id}
+								key={player.id}
+								player={player}/>
 						);
 					})}
 				</div>
@@ -82,13 +90,18 @@ const mapStateToProps = (state) => {
 	return {
 		players: getPlayersComputedValues(state),
 		cards: state.cards,
-		phases: state.phases
+		phases: state.phases,
+		activePhase: {
+			...getActivePhase(state),
+			activePlayer: getActivePlayerOfActivePhase(state)
+		},
 	}
 };
 
 const mapDispatchToProps = (dispatch) => {
 	return bindActionCreators({
-		offerCard
+		offerCard,
+		nextStep
 	}, dispatch)
 };
 
