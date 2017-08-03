@@ -43,13 +43,19 @@ class Deck extends React.PureComponent{
 	*
 	*/
 	render(){
+		const { onClick, amountOfCards } = this.props
+		const { showDialog } = this.state
 		return(
-			<div className="deck" onClick={this.handleClick} onMouseOver={this.handleMouseOver} onMouseOut={this.handleMouseOut}>
-				<span>Deck</span>
-				<span>{this.props.amountOfCards + " cards"}</span>
-				{(this.state.showDialog) ?
-					<span>(click to draw a card)</span>
-				: undefined}
+			<div
+				className="deck"
+				onClick={this.handleClick}
+				onMouseOver={(onClick) ? this.handleMouseOver : undefined}
+				onMouseOut={(onClick) ? this.handleMouseOut : undefined}>
+					<span>Deck</span>
+					<span>{amountOfCards + " cards"}</span>
+					{(showDialog) ?
+						<span>(click to draw a card)</span>
+					: undefined}
 			</div>
 		);
 	}

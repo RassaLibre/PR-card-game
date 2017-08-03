@@ -5,9 +5,6 @@ import DiscardPile from "../../components/DiscardPile/DiscardPile";
 import OfferedCards from "../../components/OfferedCards/OfferedCards";
 import Deck from "../../components/Deck/Deck";
 import {
-  offerCard
-} from '../../state/cards/actions'
-import {
   getActivePlayerOfActivePhase
 } from "../../state/players/selectors";
 import {
@@ -36,7 +33,7 @@ class TradePhase extends React.Component{
         <DiscardPile/>
         <Deck
           amountOfCards={this.props.cards.deck.length}
-          onClick={this.props.offerCard}/>
+          onClick={undefined}/>
         <OfferedCards cards={this.props.cards.offeredCards}/>
       </div>
     )
@@ -70,7 +67,6 @@ const mapStateToProps = (state) => {
 
 const mapDispatchToProps = (dispatch) => {
   return bindActionCreators({
-    offerCard
   }, dispatch)
 };
 
