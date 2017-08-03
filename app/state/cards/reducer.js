@@ -1,7 +1,8 @@
 import { combineReducers } from "redux"
 import {
   OFFER_CARD,
-  REMOVE_TOP_CARD_FROM_DECK
+  REMOVE_TOP_CARD_FROM_DECK,
+  EMPTY_OFFERED_CARDS
 } from './consts'
 
 import {
@@ -191,6 +192,8 @@ const discardPile = (state = [], action) => {
 
 const offeredCards = (state = [], action) => {
   switch(action.type){
+    case EMPTY_OFFERED_CARDS:
+      return []
     case OFFER_CARD:
       return [ ...state, action.card ]
     default:
