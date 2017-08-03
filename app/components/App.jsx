@@ -1,12 +1,8 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import Player from "./Player/Player";
-import DiscardPile from "./DiscardPile/DiscardPile";
-import OfferedCards from "./OfferedCards/OfferedCards";
-import Deck from "./Deck/Deck";
-import {
-	offerCard
-} from '../state/cards/actions'
+import DiscoverPhase from '../containers/DiscoverPhase/DiscoverPhase'
+import TradePhase from '../containers/TradePhase/TradePhase'
 import "./_App.scss";
 
 import {
@@ -43,31 +39,25 @@ class App extends React.Component{
 	*
 	*/
 	render(){
-		console.log(this.props)
+		const { activePhase, nextStep, phases, players } = this.props
 		return(
 			<div className="game">
 				<span>current phase: </span>
-				<span>{this.props.activePhase.name}</span>
+				<span>{activePhase.name}</span>
 				<span>Current player: </span>
-				<span>{this.props.activePhase.activePlayer.name}</span>
-				<button onClick={this.props.nextStep}>Next step</button>
-				<div className="board">
-					<DiscardPile/>
-					<Deck
-						amountOfCards={this.props.cards.deck.length}
-						onClick={this.props.offerCard}/>
-					<OfferedCards cards={this.props.cards.offeredCards}/>
-				</div>
+				<span>{activePhase.activePlayer.name}</span>
+				<button onClick={nextStep}>Next step</button>
+				{(phases.activePhase) ? <TradePhase/> : <DiscoverPhase/> }
 				<div className="players">
-					{this.props.players.map((player)=>{
-						return (
-							<Player
-								isActive={player.id === this.props.activePhase.activePlayer.id}
-								key={player.id}
-								player={player}/>
-						);
-					})}
-				</div>
+	        {players.map((player)=>{
+	          return (
+	            <Player
+	              isActive={player.id === activePhase.activePlayer.id}
+	              key={player.id}
+	              player={player}/>
+	          );
+	        })}
+        </div>
 			</div>
 		);
 	}
@@ -89,7 +79,6 @@ App.propTypes = {};
 const mapStateToProps = (state) => {
 	return {
 		players: getPlayersComputedValues(state),
-		cards: state.cards,
 		phases: state.phases,
 		activePhase: {
 			...getActivePhase(state),
@@ -100,7 +89,6 @@ const mapStateToProps = (state) => {
 
 const mapDispatchToProps = (dispatch) => {
 	return bindActionCreators({
-		offerCard,
 		nextStep
 	}, dispatch)
 };
