@@ -39,14 +39,14 @@ class App extends React.Component{
 	*
 	*/
 	render(){
-		const { activePhase, nextStep, phases, players } = this.props
+		const { activePhase, nextStep, phases, players, numOfOfferedCards } = this.props
 		return(
 			<div className="game">
 				<span>current phase: </span>
 				<span>{activePhase.name}</span>
 				<span>Current player: </span>
 				<span>{activePhase.activePlayer.name}</span>
-				<button onClick={nextStep}>Next step</button>
+				<button onClick={nextStep} disabled={!numOfOfferedCards}>Next step</button>
 				{(phases.activePhase) ? <TradePhase/> : <DiscoverPhase/> }
 				<div className="players">
 	        {players.map((player)=>{
@@ -80,6 +80,7 @@ const mapStateToProps = (state) => {
 	return {
 		players: getPlayersComputedValues(state),
 		phases: state.phases,
+		numOfOfferedCards: state.cards.offeredCards.length,
 		activePhase: {
 			...getActivePhase(state),
 			activePlayer: getActivePlayerOfActivePhase(state)
