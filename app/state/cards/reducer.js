@@ -81,8 +81,8 @@ const DECK_DEFAULT_STATE = [
   { name: "Galeona", type: "ship", defence: 4, coins: 3, color: BOAT_COLORS.BLACK },
   { name: "Galeona", type: "ship", defence: 7, coins: 4, color: BOAT_COLORS.BLACK },
   { name: "Galeona", type: "ship", defence: 7, coins: 4, color: BOAT_COLORS.BLACK },
-  { name: "Galeona", type: "ship", defence: 9, coins: 4, color: BOAT_COLORS.BLACK },
-  { name: "Galeona", type: "ship", defence: 9, coins: 4, color: BOAT_COLORS.BLACK },
+  { name: "Galeona", type: "ship", defence: 0, coins: 4, color: BOAT_COLORS.BLACK },
+  { name: "Galeona", type: "ship", defence: 0, coins: 4, color: BOAT_COLORS.BLACK },
 
   {name: "Expedition1", type: "expedition", reward: 2, influence: 4, signs: [SIGNS.CROSS, SIGNS.CROSS]},
   {name: "Expedition2", type: "expedition", reward: 2, influence: 4, signs: [SIGNS.ANCHOR, SIGNS.ANCHOR]},

@@ -16,13 +16,8 @@ import {
 } from '../players/selectors'
 
 import {
-  emptyOfferedCards,
-  addCardsToDiscardPile
+  moveOfferedCardsToDiscardPile
 } from '../cards/actions'
-
-import {
-  getOfferedCards
-} from '../cards/selectors'
 
 /**
 *
@@ -39,9 +34,25 @@ export const setDiscoverPhaseActivePlayer = (playerIndex) => dispatch => {
   dispatch({ type: SET_DISCOVER_PHASE_ACTIVE_PLAYER, playerIndex })
 }
 
+/**
+* because when a players turns two boats of the same color
+* and is not able to defeat the second one, the player loses
+* his turn and a next player plays
+*/
+export const activePlayerInTradePhaseLosesTurn = () => dispatch => {
+  const tradeActivePlayerIndex = getTradePhaseActivePlayerIndex(getState())
+  const newPlayerIndex = getNextPlayerIndex(getState(), tradeActivePlayerIndex)
+  dispatch(setTradePhaseActivePlayer(newPlayerIndex))
+  dispatch(setDiscoverPhaseActivePlayer(newPlayerIndex))
+  dispatch(moveOfferedCardsToDiscardPile())
+}
+
+/**
+*
+*/
 export const nextStep = () => (dispatch, getState) => {
   const activePhaseIndex = getActivePhaseIndex(getState());
-  if(activePhaseIndex === 0){ //discover, just switch phase
+  if(activePhaseIndex === 0){ //trade, just switch phase
     dispatch(togglePhase())
   }
   else{ //trade
@@ -50,8 +61,7 @@ export const nextStep = () => (dispatch, getState) => {
     const newPlayerIndex = getNextPlayerIndex(getState(), tradeActivePlayerIndex)
     if(discoverActivePlayerIndex === newPlayerIndex){ //toggle phase and set next player for discover and trade
       dispatch(togglePhase())
-      dispatch(addCardsToDiscardPile(getOfferedCards(getState())))
-      dispatch(emptyOfferedCards())
+      dispatch(moveOfferedCardsToDiscardPile())
       const newDiscoverPlayerIndex = getNextPlayerIndex(getState(), discoverActivePlayerIndex)
       dispatch(setDiscoverPhaseActivePlayer(newDiscoverPlayerIndex))
       dispatch(setTradePhaseActivePlayer(newDiscoverPlayerIndex))

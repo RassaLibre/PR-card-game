@@ -1,4 +1,7 @@
 import { combineReducers } from 'redux'
+import {
+  ADD_COINS_TO_PLAYER
+} from './consts'
 
 const PLAYERS_DEFAULT_STATE = [
   {id: 1, name: "Tomas", coins: 3, color: "#10DBE8", cards:[]},
@@ -9,6 +12,17 @@ const PLAYERS_DEFAULT_STATE = [
 
 const listOfPlayers = (state = PLAYERS_DEFAULT_STATE, action) => {
   switch(action.type){
+    case ADD_COINS_TO_PLAYER:
+      const playerToAlter = state.filter(p => p.id === action.playerId)
+      const indexOfPlayer = state.indexOf(playerToAlter)
+      if(indexOfPlayer > -1){
+        return [
+          ...state.slice(0, indexOfPlayer - 1),
+          {...state[indexOfPlayer], coins: state[indexOfPlayer].coins + action.numOfCoins},
+          ...state.slice(indexOfPlayer)
+        ]
+      }
+      else return state
     default:
       return state
   }

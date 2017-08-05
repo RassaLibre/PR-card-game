@@ -1,0 +1,1 @@
+export const ADD_COINS_TO_PLAYER = 'ADD_COINS_TO_PLAYER'
