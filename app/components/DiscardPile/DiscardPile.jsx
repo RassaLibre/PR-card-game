@@ -18,9 +18,11 @@ class DiscardPile extends React.PureComponent{
 	*
 	*/
 	render(){
+		const { cards } = this.props
 		return(
 			<div className="discardPile">
 				<span className="discardPile__title">Discard pile</span>
+				<span>{cards.length + " cards"}</span>
 			</div>
 		);
 	}
@@ -31,14 +33,14 @@ class DiscardPile extends React.PureComponent{
 *
 */
 DiscardPile.defaultProps = {
-
+	cards: []
 };
 
 /**
 *
 */
 DiscardPile.propTypes = {
-
+	cards: React.PropTypes.array
 };
 
 /**

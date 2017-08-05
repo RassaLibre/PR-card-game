@@ -31,10 +31,11 @@ class DiscoverPhase extends React.Component{
   *
   */
   render(){
+    console.log('DiscoverPhase props: ', this.props)
     const { cards, offerCard } = this.props
     return(
       <div className="board">
-        <DiscardPile/>
+        <DiscardPile cards={cards.discardPile}/>
         <Deck
           amountOfCards={cards.deck.length}
           onClick={offerCard}/>

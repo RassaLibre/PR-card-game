@@ -16,8 +16,13 @@ import {
 } from '../players/selectors'
 
 import {
-  emptyOfferedCards
+  emptyOfferedCards,
+  addCardsToDiscardPile
 } from '../cards/actions'
+
+import {
+  getOfferedCards
+} from '../cards/selectors'
 
 /**
 *
@@ -45,6 +50,7 @@ export const nextStep = () => (dispatch, getState) => {
     const newPlayerIndex = getNextPlayerIndex(getState(), tradeActivePlayerIndex)
     if(discoverActivePlayerIndex === newPlayerIndex){ //toggle phase and set next player for discover and trade
       dispatch(togglePhase())
+      dispatch(addCardsToDiscardPile(getOfferedCards(getState())))
       dispatch(emptyOfferedCards())
       const newDiscoverPlayerIndex = getNextPlayerIndex(getState(), discoverActivePlayerIndex)
       dispatch(setDiscoverPhaseActivePlayer(newDiscoverPlayerIndex))
