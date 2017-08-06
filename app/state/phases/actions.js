@@ -20,16 +20,22 @@ import {
 } from '../cards/actions'
 
 /**
-*
+* @tested
 */
 export const togglePhase = () => dispatch => {
   dispatch({ type: TOGGLE_PHASE })
 };
 
+/**
+* @tested
+*/
 export const setTradePhaseActivePlayer = (playerIndex) => dispatch => {
   dispatch({ type: SET_TRADE_PHASE_ACTIVE_PLAYER, playerIndex })
 }
 
+/**
+* @tested
+*/
 export const setDiscoverPhaseActivePlayer = (playerIndex) => dispatch => {
   dispatch({ type: SET_DISCOVER_PHASE_ACTIVE_PLAYER, playerIndex })
 }
