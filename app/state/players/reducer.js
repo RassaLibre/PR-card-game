@@ -13,13 +13,14 @@ const PLAYERS_DEFAULT_STATE = [
 const listOfPlayers = (state = PLAYERS_DEFAULT_STATE, action) => {
   switch(action.type){
     case ADD_COINS_TO_PLAYER:
-      const playerToAlter = state.filter(p => p.id === action.playerId)
+      const playerToAlter = state.find(p => p.id === action.playerId)
+      console.log(playerToAlter)
       const indexOfPlayer = state.indexOf(playerToAlter)
       if(indexOfPlayer > -1){
         return [
-          ...state.slice(0, indexOfPlayer - 1),
+          ...state.slice(0, indexOfPlayer),
           {...state[indexOfPlayer], coins: state[indexOfPlayer].coins + action.numOfCoins},
-          ...state.slice(indexOfPlayer)
+          ...state.slice(indexOfPlayer + 1)
         ]
       }
       else return state
