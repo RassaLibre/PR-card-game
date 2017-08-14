@@ -14,7 +14,6 @@ const listOfPlayers = (state = PLAYERS_DEFAULT_STATE, action) => {
   switch(action.type){
     case ADD_COINS_TO_PLAYER:
       const playerToAlter = state.find(p => p.id === action.playerId)
-      console.log(playerToAlter)
       const indexOfPlayer = state.indexOf(playerToAlter)
       if(indexOfPlayer > -1){
         return [
