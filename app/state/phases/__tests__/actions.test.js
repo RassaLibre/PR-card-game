@@ -2,7 +2,8 @@ import {
   togglePhase,
   setTradePhaseActivePlayer,
   setDiscoverPhaseActivePlayer,
-  activePlayerInDiscoverPhaseLosesTurn
+  activePlayerInDiscoverPhaseLosesTurn,
+  nextStep
 } from '../actions'
 import RootReducer from '../../../RootReducer'
 import {
@@ -13,6 +14,14 @@ import {
 import {
   OFFER_CARD
 } from '../../cards/consts'
+import {
+  SET_PHASE,
+  SET_TRADE_PHASE_ACTIVE_PLAYER,
+  SET_DISCOVER_PHASE_ACTIVE_PLAYER
+} from '../consts'
+import {
+  getPlayers
+} from '../../players/selectors'
 import {
   getOfferedCards,
   getDiscardPile
@@ -88,6 +97,68 @@ describe("Phase actions", ()=>{
       expect(getOfferedCards(store.getState()).length).toBe(0)
       //everything that was offered is now discarded
       expect(getDiscardPile(store.getState()).length).toBe(numOfDiscardCards + numOfOfferedCards)
+    })
+
+  })
+
+  describe("Phase cycles in the game", ()=>{
+
+    it("should change the phase when the active phase is discover", ()=>{
+      //to make sure we are in the discover phase
+      store.dispatch({ type: SET_PHASE, phase: 0 })
+      nextStep()(store.dispatch, store.getState)
+      expect(getActivePhaseIndex(store.getState())).toBe(1);
+    })
+
+    it("should keep the phase when in trade phase and not at the end", ()=>{
+      //to make sure trade phase is active
+      store.dispatch({ type: SET_PHASE, phase: 1 })
+      //to make sure that the first player is active
+      store.dispatch({ type: SET_TRADE_PHASE_ACTIVE_PLAYER, playerIndex: 0 })
+      store.dispatch({ type: SET_DISCOVER_PHASE_ACTIVE_PLAYER, playerIndex: 0 })
+      nextStep()(store.dispatch, store.getState)
+      expect(getActivePhaseIndex(store.getState())).toBe(1)
+    })
+
+    it("should change the phase when trade phase is over", ()=>{
+      //to make sure trade phase is active
+      store.dispatch({ type: SET_PHASE, phase: 1 })
+      //to make sure that the first player is active
+      store.dispatch({ type: SET_TRADE_PHASE_ACTIVE_PLAYER, playerIndex: 3 })
+      store.dispatch({ type: SET_DISCOVER_PHASE_ACTIVE_PLAYER, playerIndex: 0 })
+      nextStep()(store.dispatch, store.getState)
+      expect(getActivePhaseIndex(store.getState())).toBe(0)
+    })
+
+    it("should change the active player in discover phase when trade phase is over", ()=>{
+      //to make sure trade phase is active
+      store.dispatch({ type: SET_PHASE, phase: 1 })
+      //to make sure that the first player is active
+      store.dispatch({ type: SET_TRADE_PHASE_ACTIVE_PLAYER, playerIndex: 3 })
+      store.dispatch({ type: SET_DISCOVER_PHASE_ACTIVE_PLAYER, playerIndex: 0 })
+      nextStep()(store.dispatch, store.getState)
+      expect(getDiscoverPhaseActivePlayerIndex(store.getState())).toBe(1)
+    })
+
+    it("should change the active player in trade phase when trade phase is over", ()=>{
+      //to make sure trade phase is active
+      store.dispatch({ type: SET_PHASE, phase: 1 })
+      //to make sure that the first player is active
+      store.dispatch({ type: SET_TRADE_PHASE_ACTIVE_PLAYER, playerIndex: 3 })
+      store.dispatch({ type: SET_DISCOVER_PHASE_ACTIVE_PLAYER, playerIndex: 0 })
+      nextStep()(store.dispatch, store.getState)
+      expect(getTradePhaseActivePlayerIndex(store.getState())).toBe(1)
+    })
+
+    it("active players should be the same when trade phase is over", ()=>{
+      //to make sure trade phase is active
+      store.dispatch({ type: SET_PHASE, phase: 1 })
+      //to make sure that the first player is active
+      store.dispatch({ type: SET_TRADE_PHASE_ACTIVE_PLAYER, playerIndex: 3 })
+      store.dispatch({ type: SET_DISCOVER_PHASE_ACTIVE_PLAYER, playerIndex: 0 })
+      nextStep()(store.dispatch, store.getState)
+      expect(getTradePhaseActivePlayerIndex(store.getState()))
+        .toBe(getDiscoverPhaseActivePlayerIndex(store.getState()))
     })
 
   })
