@@ -7,7 +7,8 @@ import {
   removeTopCardFromDeck,
   moveTopCardToDiscardPile,
   moveOfferedCardsToDiscardPile,
-  emptyOfferedCards
+  emptyOfferedCards,
+  moveDiscardPileToDeck
 } from '../actions'
 
 import {
@@ -97,6 +98,18 @@ describe("Cards actions", ()=>{
     emptyOfferedCards()(store.dispatch, store.getState)
     const newOfferedCards = getOfferedCards(store.getState())
     expect(newOfferedCards.length).toBe(0)
+  })
+
+  it("should move all cards on discard pile to deck", ()=>{
+    //to make sure something is in the discard pile
+    store.dispatch({ type: ADD_CARDS_TO_DISCARD_PILE, cards })
+    const discardPile = getDiscardPile(store.getState())
+    const deck = getDeck(store.getState())
+    moveDiscardPileToDeck()(store.dispatch, store.getState)
+    const newDiscardPile = getDiscardPile(store.getState())
+    const newDeck = getDeck(store.getState())
+    expect(newDiscardPile.length).toBe(0);
+    expect(newDeck.length).toBe(deck.length + discardPile.length)
   })
 
 })

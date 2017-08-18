@@ -32,11 +32,10 @@ import {
 /**
 *
 */
-const _isShipDefeated = (ship) => {
+const _isShipDefeated = (ship, activePlayer) => {
   //cannot be defeated
   if(!ship.defence) return false
   else{ //see if the player can defeat it
-    const activePlayer = getActivePlayerOfActivePhase(getState())
     if(activePlayer.defence >= ship.defence) return true
     else return false
   }
@@ -54,6 +53,9 @@ const _getNumberOfPlayersCardsWithTypeAndName = (player, type, name) => {
   ,0)
 }
 
+/**
+* @tested
+*/
 export const emptyOfferedCards = () => dispatch => {
   dispatch({ type: EMPTY_OFFERED_CARDS })
 }
@@ -112,7 +114,8 @@ export const moveOfferedCardsToDiscardPile = () => (dispatch, getState) => {
 
 /**
 * Because when the deck runs out of cards, we want to fill it
-* with the cards from discard pile and shuffle dem
+* with the cards from discard pile and shuffle them
+* @tested
 */
 export const moveDiscardPileToDeck = () => (dispatch, getState) => {
   dispatch(addCardsToDeck(getDiscardPile(getState())))
@@ -128,7 +131,8 @@ export const offerCard = card => (dispatch, getState) => {
   if(topCard.type === "ship"){
     const shipsWithSameColor = getOfferedShipsWithColor(getState(), topCard.color)
     if(numOfShipsWithSameColor.length){
-      if(_isShipDefeated(topCard)){
+      const activePlayer = getActivePlayerOfActivePhase(getState())
+      if(_isShipDefeated(topCard, activePlayer)){
         dispatch(moveTopCardToDiscardPile())
         return
       }
