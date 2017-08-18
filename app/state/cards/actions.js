@@ -26,9 +26,12 @@ import {
 } from '../players/actions'
 
 import {
-  activePlayerInTradePhaseLosesTurn
+  activePlayerInDiscoverPhaseLosesTurn
 } from '../phases/actions'
 
+/**
+*
+*/
 const _isShipDefeated = (ship) => {
   //cannot be defeated
   if(!ship.defence) return false
@@ -55,28 +58,43 @@ export const emptyOfferedCards = () => dispatch => {
   dispatch({ type: EMPTY_OFFERED_CARDS })
 }
 
+/**
+* @tested
+*/
 export const addCardsToDiscardPile = (cards) => dispatch => {
   dispatch({ type: ADD_CARDS_TO_DISCARD_PILE, cards })
 }
 
+/**
+* @tested
+*/
 export const addCardsToDeck = (cards) => dispatch => {
   dispatch({ type: ADD_CARDS_TO_DECK, cards })
 }
 
+/**
+*
+*/
 export const shuffleDeck = () => dispatch => {
   dispatch({ type: SHUFFLE_DECK })
 }
 
+/**
+* @tested
+*/
 export const emptyDiscardPile = () => dispatch => {
   dispatch({ type: EMPTY_DISCARD_PILE })
 }
 
+/**
+* @tested
+*/
 export const removeTopCardFromDeck = () => dispatch => {
   dispatch({ type: REMOVE_TOP_CARD_FROM_DECK })
 }
 
 /**
-*
+* @tested
 */
 export const moveTopCardToDiscardPile = () => (dispatch, getState) => {
   const topCard = getTopCardOnDeck(getState())
@@ -85,7 +103,7 @@ export const moveTopCardToDiscardPile = () => (dispatch, getState) => {
 }
 
 /**
-*
+* @tested
 */
 export const moveOfferedCardsToDiscardPile = () => (dispatch, getState) => {
   dispatch(addCardsToDiscardPile(getOfferedCards(getState())))
@@ -116,7 +134,7 @@ export const offerCard = card => (dispatch, getState) => {
       }
       else{
         dispatch(moveTopCardToDiscardPile())
-        dispatch(activePlayerInTradePhaseLosesTurn())
+        dispatch(activePlayerInDiscoverPhaseLosesTurn())
         getPlayersWithJoker(getState()).map(p => {
           dispatch(addCoinsToPlayer(p, _getNumberOfPlayersCardsWithTypeAndName(p, "person", "joker")))
         })

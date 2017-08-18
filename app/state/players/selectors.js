@@ -3,6 +3,9 @@ import {
   getActivePlayerIndex
 } from '../phases/selectors'
 
+/**
+*
+*/
 const _hasJoker = (player) => {
   let hasJoker = false
   player.cards.map(c => {
@@ -11,6 +14,9 @@ const _hasJoker = (player) => {
   return hasJoker
 };
 
+/**
+*
+*/
 const _extendPlayerWithCalculatedValues = (player) => {
   let influence = player.cards.reduce((prev, currentCard) => {
     return prev + currentCard.influence;
@@ -24,6 +30,15 @@ const _extendPlayerWithCalculatedValues = (player) => {
   return { ...player, influence, defence };
 }
 
+/**
+*
+*/
+export const getPlayerWithId =
+  ({ players }, playerId) => _extendPlayerWithCalculatedValues(players.find(p => p.id === playerId))
+
+/**
+*
+*/
 export const getPlayers = (state) => state.players
 
 /**
@@ -47,6 +62,9 @@ export const getNextPlayerIndex = ({ players }, currentIndex) => {
 }
 
 /**
-*
+* A player has a some values which are computed
+* based on the cards the player has. The selector enhances
+* the player object stored in the state with these values
 */
-export const getPlayersComputedValues = createSelector([ getPlayers ], players => players.map(_extendPlayerWithCalculatedValues))
+export const getPlayersComputedValues =
+  createSelector([ getPlayers ], players => players.map(_extendPlayerWithCalculatedValues))

@@ -28,7 +28,6 @@ class TradePhase extends React.Component{
   *
   */
   render(){
-    console.log('TradePhase props: ', this.props)
     return(
       <div className="board">
         <DiscardPile/>
