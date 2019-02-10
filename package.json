@@ -1,7 +1,7 @@
 {
   "name": "clarify",
   "version": "1.0.0",
-  "description": "Clarify",
+  "description": "PR",
   "main": "app/index.html",
   "private": true,
   "jest": {
