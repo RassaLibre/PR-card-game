@@ -3,12 +3,14 @@ import {
   setTradePhaseActivePlayer,
   setDiscoverPhaseActivePlayer,
   activePlayerInDiscoverPhaseLosesTurn,
-  nextStep
+  nextStep,
+  next
 } from '../actions'
 import RootReducer from '../../../RootReducer'
 import {
   getTradePhaseActivePlayerIndex,
   getActivePhaseIndex,
+  getActivePhaseName,
   getDiscoverPhaseActivePlayerIndex
 } from '../selectors'
 import {
@@ -17,7 +19,8 @@ import {
 import {
   SET_PHASE,
   SET_TRADE_PHASE_ACTIVE_PLAYER,
-  SET_DISCOVER_PHASE_ACTIVE_PLAYER
+  SET_DISCOVER_PHASE_ACTIVE_PLAYER,
+  PHASES
 } from '../consts'
 import {
   getPlayers
@@ -44,6 +47,7 @@ describe("Phase actions", ()=>{
     cards.map(card => store.dispatch({ type: OFFER_CARD, card: card }))
   })
 
+  /**
   it("should toggle between two phases", ()=>{
     const initPhase = getActivePhaseIndex(store.getState())
     togglePhase()(store.dispatch)
@@ -105,9 +109,9 @@ describe("Phase actions", ()=>{
 
     it("should change the phase when the active phase is discover", ()=>{
       //to make sure we are in the discover phase
-      store.dispatch({ type: SET_PHASE, phase: 0 })
+      store.dispatch({ type: SET_PHASE, phase: PHASES.DISCOVER })
       nextStep()(store.dispatch, store.getState)
-      expect(getActivePhaseIndex(store.getState())).toBe(1);
+      expect(getActivePhaseIndex(store.getState())).toBe(PHASES.DISCOVER);
     })
 
     it("should keep the phase when in trade phase and not at the end", ()=>{
@@ -122,17 +126,17 @@ describe("Phase actions", ()=>{
 
     it("should change the phase when trade phase is over", ()=>{
       //to make sure trade phase is active
-      store.dispatch({ type: SET_PHASE, phase: 1 })
+      store.dispatch({ type: SET_PHASE, phase: PHASES.TRADE })
       //to make sure that the first player is active
       store.dispatch({ type: SET_TRADE_PHASE_ACTIVE_PLAYER, playerIndex: 3 })
       store.dispatch({ type: SET_DISCOVER_PHASE_ACTIVE_PLAYER, playerIndex: 0 })
       nextStep()(store.dispatch, store.getState)
-      expect(getActivePhaseIndex(store.getState())).toBe(0)
+      expect(getActivePhaseIndex(store.getState())).toBe(PHASES.DISCOVER)
     })
 
     it("should change the active player in discover phase when trade phase is over", ()=>{
       //to make sure trade phase is active
-      store.dispatch({ type: SET_PHASE, phase: 1 })
+      store.dispatch({ type: SET_PHASE, phase: PHASES.TRADE })
       //to make sure that the first player is active
       store.dispatch({ type: SET_TRADE_PHASE_ACTIVE_PLAYER, playerIndex: 3 })
       store.dispatch({ type: SET_DISCOVER_PHASE_ACTIVE_PLAYER, playerIndex: 0 })
@@ -142,7 +146,7 @@ describe("Phase actions", ()=>{
 
     it("should change the active player in trade phase when trade phase is over", ()=>{
       //to make sure trade phase is active
-      store.dispatch({ type: SET_PHASE, phase: 1 })
+      store.dispatch({ type: SET_PHASE, phase: PHASES.TRADE })
       //to make sure that the first player is active
       store.dispatch({ type: SET_TRADE_PHASE_ACTIVE_PLAYER, playerIndex: 3 })
       store.dispatch({ type: SET_DISCOVER_PHASE_ACTIVE_PLAYER, playerIndex: 0 })
@@ -150,9 +154,9 @@ describe("Phase actions", ()=>{
       expect(getTradePhaseActivePlayerIndex(store.getState())).toBe(1)
     })
 
-    it("active players should be the same when trade phase is over", ()=>{
+    it("active players should be the same when trade phase is over", ()=> {
       //to make sure trade phase is active
-      store.dispatch({ type: SET_PHASE, phase: 1 })
+      store.dispatch({ type: SET_PHASE, phase: PHASES.TRADE })
       //to make sure that the first player is active
       store.dispatch({ type: SET_TRADE_PHASE_ACTIVE_PLAYER, playerIndex: 3 })
       store.dispatch({ type: SET_DISCOVER_PHASE_ACTIVE_PLAYER, playerIndex: 0 })
@@ -161,6 +165,89 @@ describe("Phase actions", ()=>{
         .toBe(getDiscoverPhaseActivePlayerIndex(store.getState()))
     })
 
+  })
+  **/
+
+  describe('next', () => {
+    it('should follow the game cycle', () => {
+      expect(getActivePhaseName(store.getState())).toBe(PHASES.DISCOVER)
+      expect(getDiscoverPhaseActivePlayerIndex(store.getState())).toBe(0)
+      store.dispatch(next())
+      expect(getActivePhaseName(store.getState())).toBe(PHASES.TRADE)
+      expect(getDiscoverPhaseActivePlayerIndex(store.getState())).toBe(0)
+      store.dispatch(next())
+      expect(getActivePhaseName(store.getState())).toBe(PHASES.TRADE)
+      expect(getDiscoverPhaseActivePlayerIndex(store.getState())).toBe(1)
+      store.dispatch(next())
+      expect(getActivePhaseName(store.getState())).toBe(PHASES.TRADE)
+      expect(getDiscoverPhaseActivePlayerIndex(store.getState())).toBe(2)
+      store.dispatch(next())
+      expect(getActivePhaseName(store.getState())).toBe(PHASES.TRADE)
+      expect(getDiscoverPhaseActivePlayerIndex(store.getState())).toBe(3)
+      store.dispatch(next())
+
+      expect(getActivePhaseName(store.getState())).toBe(PHASES.DISCOVER)
+      expect(getDiscoverPhaseActivePlayerIndex(store.getState())).toBe(1)
+      store.dispatch(next())
+      expect(getActivePhaseName(store.getState())).toBe(PHASES.TRADE)
+      expect(getDiscoverPhaseActivePlayerIndex(store.getState())).toBe(1)
+      store.dispatch(next())
+      expect(getActivePhaseName(store.getState())).toBe(PHASES.TRADE)
+      expect(getDiscoverPhaseActivePlayerIndex(store.getState())).toBe(2)
+      store.dispatch(next())
+      expect(getActivePhaseName(store.getState())).toBe(PHASES.TRADE)
+      expect(getDiscoverPhaseActivePlayerIndex(store.getState())).toBe(3)
+      store.dispatch(next())
+      expect(getActivePhaseName(store.getState())).toBe(PHASES.TRADE)
+      expect(getDiscoverPhaseActivePlayerIndex(store.getState())).toBe(0)
+      store.dispatch(next())
+
+      expect(getActivePhaseName(store.getState())).toBe(PHASES.DISCOVER)
+      expect(getDiscoverPhaseActivePlayerIndex(store.getState())).toBe(2)
+      store.dispatch(next())
+      expect(getActivePhaseName(store.getState())).toBe(PHASES.TRADE)
+      expect(getDiscoverPhaseActivePlayerIndex(store.getState())).toBe(2)
+      store.dispatch(next())
+      expect(getActivePhaseName(store.getState())).toBe(PHASES.TRADE)
+      expect(getDiscoverPhaseActivePlayerIndex(store.getState())).toBe(3)
+      store.dispatch(next())
+      expect(getActivePhaseName(store.getState())).toBe(PHASES.TRADE)
+      expect(getDiscoverPhaseActivePlayerIndex(store.getState())).toBe(0)
+      store.dispatch(next())
+      expect(getActivePhaseName(store.getState())).toBe(PHASES.TRADE)
+      expect(getDiscoverPhaseActivePlayerIndex(store.getState())).toBe(1)
+
+      expect(getActivePhaseName(store.getState())).toBe(PHASES.DISCOVER)
+      expect(getDiscoverPhaseActivePlayerIndex(store.getState())).toBe(3)
+      store.dispatch(next())
+      expect(getActivePhaseName(store.getState())).toBe(PHASES.TRADE)
+      expect(getDiscoverPhaseActivePlayerIndex(store.getState())).toBe(3)
+      store.dispatch(next())
+      expect(getActivePhaseName(store.getState())).toBe(PHASES.TRADE)
+      expect(getDiscoverPhaseActivePlayerIndex(store.getState())).toBe(0)
+      store.dispatch(next())
+      expect(getActivePhaseName(store.getState())).toBe(PHASES.TRADE)
+      expect(getDiscoverPhaseActivePlayerIndex(store.getState())).toBe(1)
+      store.dispatch(next())
+      expect(getActivePhaseName(store.getState())).toBe(PHASES.TRADE)
+      expect(getDiscoverPhaseActivePlayerIndex(store.getState())).toBe(2)
+
+      expect(getActivePhaseName(store.getState())).toBe(PHASES.DISCOVER)
+      expect(getDiscoverPhaseActivePlayerIndex(store.getState())).toBe(0)
+      store.dispatch(next())
+      expect(getActivePhaseName(store.getState())).toBe(PHASES.TRADE)
+      expect(getDiscoverPhaseActivePlayerIndex(store.getState())).toBe(0)
+      store.dispatch(next())
+      expect(getActivePhaseName(store.getState())).toBe(PHASES.TRADE)
+      expect(getDiscoverPhaseActivePlayerIndex(store.getState())).toBe(1)
+      store.dispatch(next())
+      expect(getActivePhaseName(store.getState())).toBe(PHASES.TRADE)
+      expect(getDiscoverPhaseActivePlayerIndex(store.getState())).toBe(2)
+      store.dispatch(next())
+      expect(getActivePhaseName(store.getState())).toBe(PHASES.TRADE)
+      expect(getDiscoverPhaseActivePlayerIndex(store.getState())).toBe(3)
+      store.dispatch(next())
+    })
   })
 
 })

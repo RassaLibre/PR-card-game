@@ -61,7 +61,9 @@ export const activePlayerInDiscoverPhaseLosesTurn = () => (dispatch, getState) =
 export const nextStep = () => (dispatch, getState) => {
   const activePhaseIndex = getActivePhaseIndex(getState());
   if(activePhaseIndex === 0){ //discover, just switch phase
+    const newPlayerIndex = getNextPlayerIndex(getState(), tradeActivePlayerIndex)
     dispatch(togglePhase())
+    dispatch(setTradePhaseActivePlayer(newPlayerIndex))
   }
   else{ //trade
     const tradeActivePlayerIndex = getTradePhaseActivePlayerIndex(getState())
@@ -77,6 +79,10 @@ export const nextStep = () => (dispatch, getState) => {
     }
     else dispatch(setTradePhaseActivePlayer(newPlayerIndex))
   }
+}
+
+export const next = () => (dispatch, getState) => {
+  //TODO: implement me!
 }
 
 

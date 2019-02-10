@@ -10,6 +10,8 @@ export const getPhases = (state) => state.phases
 */
 export const getActivePhaseIndex = (state) => state.phases.activePhase
 
+export const getActivePhaseName = (state) => state.phases.activePhase
+
 /**
 * @return {Number}
 */

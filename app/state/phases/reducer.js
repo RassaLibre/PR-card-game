@@ -3,7 +3,8 @@ import {
   TOGGLE_PHASE,
   SET_TRADE_PHASE_ACTIVE_PLAYER,
   SET_DISCOVER_PHASE_ACTIVE_PLAYER,
-  SET_PHASE
+  SET_PHASE,
+  PHASES
 } from './consts'
 
 const discoverPhase = (state = {activePlayerIndex: 0, name: "Discover"}, action) => {
@@ -30,14 +31,15 @@ const tradePhase = (state = {activePlayerIndex: 0, name: "Trade and Hire"}, acti
   }
 }
 
-const activePhase = (state = 0, action) => {
+const activePhase = (state = PHASES.DISCOVER, action) => {
   switch(action.type){
     case SET_PHASE:
-      if(action.phase === 0) return 0;
-      else return 1;
+      return action.phase
     case TOGGLE_PHASE:
-      if(state === 0) return 1
-      else return 0
+      if(state === PHASES.DISCOVER)
+        return PHASES.TRADE
+      else
+        return PHASES.DISCOVER
     default:
       return state
   }
