@@ -15,7 +15,7 @@ import {
 } from "../state/phases/selectors";
 
 import {
-	nextStep
+	next
 } from "../state/phases/actions"
 
 import {
@@ -43,10 +43,10 @@ class App extends React.Component{
 		return(
 			<div className="game">
 				<span>current phase: </span>
-				<span>{activePhase.name}</span>
+				<span>{this.props.ac}</span>
 				<span>Current player: </span>
 				<span>{activePhase.activePlayer.name}</span>
-				<button onClick={nextStep} disabled={!numOfOfferedCards}>Next step</button>
+				<button onClick={nextStep}>Next step</button>
 				{(phases.activePhase) ? <TradePhase/> : <DiscoverPhase/> }
 				<div className="players">
 	        {players.map((player)=>{
@@ -81,6 +81,7 @@ const mapStateToProps = (state) => {
 		players: getPlayersComputedValues(state),
 		phases: state.phases,
 		numOfOfferedCards: state.cards.offeredCards.length,
+		ac: state.phases.activePhase,
 		activePhase: {
 			...getActivePhase(state),
 			activePlayer: getActivePlayerOfActivePhase(state)
@@ -90,7 +91,7 @@ const mapStateToProps = (state) => {
 
 const mapDispatchToProps = (dispatch) => {
 	return bindActionCreators({
-		nextStep
+		nextStep: next
 	}, dispatch)
 };
 

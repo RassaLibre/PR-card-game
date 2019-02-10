@@ -1,13 +1,15 @@
 import {
   TOGGLE_PHASE,
   SET_TRADE_PHASE_ACTIVE_PLAYER,
-  SET_DISCOVER_PHASE_ACTIVE_PLAYER
+  SET_DISCOVER_PHASE_ACTIVE_PLAYER,
+  PHASES
 } from './consts'
 
 import {
   getActivePhase,
   getActivePhaseIndex,
   getTradePhaseActivePlayerIndex,
+  getActivePhaseName,
   getDiscoverPhaseActivePlayerIndex
 } from './selectors'
 
@@ -58,15 +60,11 @@ export const activePlayerInDiscoverPhaseLosesTurn = () => (dispatch, getState) =
 * This function just controls the flow in the game. It switches
 * phases and active players
 */
-export const nextStep = () => (dispatch, getState) => {
-  const activePhaseIndex = getActivePhaseIndex(getState());
-  if(activePhaseIndex === 0){ //discover, just switch phase
-    const newPlayerIndex = getNextPlayerIndex(getState(), tradeActivePlayerIndex)
-    dispatch(togglePhase())
-    dispatch(setTradePhaseActivePlayer(newPlayerIndex))
-  }
-  else{ //trade
-    const tradeActivePlayerIndex = getTradePhaseActivePlayerIndex(getState())
+export const next = () => (dispatch, getState) => {
+  const activePhaseIndex = getActivePhaseName(getState()),
+    tradeActivePlayerIndex = getTradePhaseActivePlayerIndex(getState())
+  if(activePhaseIndex === PHASES.DISCOVER) dispatch(togglePhase())
+  else{
     const discoverActivePlayerIndex = getDiscoverPhaseActivePlayerIndex(getState())
     const newPlayerIndex = getNextPlayerIndex(getState(), tradeActivePlayerIndex)
     //when all the players had a turn in the trade phase
@@ -79,10 +77,6 @@ export const nextStep = () => (dispatch, getState) => {
     }
     else dispatch(setTradePhaseActivePlayer(newPlayerIndex))
   }
-}
-
-export const next = () => (dispatch, getState) => {
-  //TODO: implement me!
 }
 
 
