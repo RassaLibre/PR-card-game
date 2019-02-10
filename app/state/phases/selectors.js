@@ -32,4 +32,4 @@ export const getActivePhase = createSelector([ getPhases ], (phases)=>{
 * @return {Number}
 */
 export const getActivePlayerIndex =
-  createSelector([ getActivePhase ], (activePhase) => activePhase.activePlayerIndex);
+  createSelector([ getActivePhase ], (activePhase) => activePhase.activePlayerIndex)

@@ -6,8 +6,6 @@ import {
   SET_PHASE
 } from './consts'
 
-const PHASES = ["DISCOVER", "TRADE"]
-
 const discoverPhase = (state = {activePlayerIndex: 0, name: "Discover"}, action) => {
   switch(action.type){
     case SET_DISCOVER_PHASE_ACTIVE_PLAYER:
