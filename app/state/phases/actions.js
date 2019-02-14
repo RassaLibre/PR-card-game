@@ -18,43 +18,30 @@ import {
 } from '../players/selectors'
 
 import {
-  moveOfferedCardsToDiscardPile
-} from '../cards/actions'
+  discoverPhaseStarts,
+  discoverPhaseEnds,
+  tradingPhaseStarts,
+  tradingPhaseEnds,
+  roundOver,
+  newPlayerInTradingPhase,
+} from '../gameHooks/actions'
 
 /**
 * @tested
 */
-export const togglePhase = () => dispatch => {
-  dispatch({ type: TOGGLE_PHASE })
-};
+export const togglePhase = () => ({ type: TOGGLE_PHASE })
 
 /**
 * @tested
 */
-export const setTradePhaseActivePlayer = (playerIndex) => dispatch => {
-  dispatch({ type: SET_TRADE_PHASE_ACTIVE_PLAYER, playerIndex })
-}
+export const setTradePhaseActivePlayer = playerIndex =>
+  ({ type: SET_TRADE_PHASE_ACTIVE_PLAYER, playerIndex })
 
 /**
 * @tested
 */
-export const setDiscoverPhaseActivePlayer = (playerIndex) => dispatch => {
-  dispatch({ type: SET_DISCOVER_PHASE_ACTIVE_PLAYER, playerIndex })
-}
-
-/**
-* because when a players turns two boats of the same color
-* and is not able to defeat the second one, the player loses
-* his turn and a next player plays
-* @tested
-*/
-export const activePlayerInDiscoverPhaseLosesTurn = () => (dispatch, getState) => {
-  const discoverActivePlayerIndex = getDiscoverPhaseActivePlayerIndex(getState())
-  const newPlayerIndex = getNextPlayerIndex(getState(), discoverActivePlayerIndex)
-  dispatch(setTradePhaseActivePlayer(newPlayerIndex))
-  dispatch(setDiscoverPhaseActivePlayer(newPlayerIndex))
-  dispatch(moveOfferedCardsToDiscardPile())
-}
+export const setDiscoverPhaseActivePlayer = playerIndex =>
+  ({ type: SET_DISCOVER_PHASE_ACTIVE_PLAYER, playerIndex })
 
 /**
 * This function just controls the flow in the game. It switches
@@ -63,19 +50,28 @@ export const activePlayerInDiscoverPhaseLosesTurn = () => (dispatch, getState) =
 export const next = () => (dispatch, getState) => {
   const activePhaseIndex = getActivePhaseName(getState()),
     tradeActivePlayerIndex = getTradePhaseActivePlayerIndex(getState())
-  if(activePhaseIndex === PHASES.DISCOVER) dispatch(togglePhase())
+  if(activePhaseIndex === PHASES.DISCOVER) {
+    dispatch(discoverPhaseEnds())
+    dispatch(togglePhase())
+    dispatch(tradingPhaseStarts())
+  }
   else{
     const discoverActivePlayerIndex = getDiscoverPhaseActivePlayerIndex(getState())
     const newPlayerIndex = getNextPlayerIndex(getState(), tradeActivePlayerIndex)
     //when all the players had a turn in the trade phase
-    if(discoverActivePlayerIndex === newPlayerIndex){
+    if(discoverActivePlayerIndex === newPlayerIndex){ // round ends
       dispatch(togglePhase())
-      dispatch(moveOfferedCardsToDiscardPile())
       const newDiscoverPlayerIndex = getNextPlayerIndex(getState(), discoverActivePlayerIndex)
-      dispatch(setDiscoverPhaseActivePlayer(newDiscoverPlayerIndex))
+      dispatch(tradingPhaseEnds())
+      dispatch(roundOver())
       dispatch(setTradePhaseActivePlayer(newDiscoverPlayerIndex))
+      dispatch(setDiscoverPhaseActivePlayer(newDiscoverPlayerIndex))
+      dispatch(discoverPhaseStarts())
     }
-    else dispatch(setTradePhaseActivePlayer(newPlayerIndex))
+    else {  // next player in trading phase
+      dispatch(setTradePhaseActivePlayer(newPlayerIndex))
+      dispatch(newPlayerInTradingPhase())
+    }
   }
 }
 

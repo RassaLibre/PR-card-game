@@ -25,10 +25,6 @@ import {
   addCoinsToPlayer
 } from '../players/actions'
 
-import {
-  activePlayerInDiscoverPhaseLosesTurn
-} from '../phases/actions'
-
 /**
 *
 */
@@ -124,33 +120,11 @@ export const moveDiscardPileToDeck = () => (dispatch, getState) => {
 }
 
 /**
-* This actions is triggered when player wants to turn another card
+* This action takes the card from the top of the deck
+* and offers it.
 */
 export const offerCard = card => (dispatch, getState) => {
   const topCard = getTopCardOnDeck(getState())
-  if(topCard.type === "ship"){
-    const shipsWithSameColor = getOfferedShipsWithColor(getState(), topCard.color)
-    if(numOfShipsWithSameColor.length){
-      const activePlayer = getActivePlayerOfActivePhase(getState())
-      if(_isShipDefeated(topCard, activePlayer)){
-        dispatch(moveTopCardToDiscardPile())
-        return
-      }
-      else{
-        dispatch(moveTopCardToDiscardPile())
-        dispatch(activePlayerInDiscoverPhaseLosesTurn())
-        getPlayersWithJoker(getState()).map(p => {
-          dispatch(addCoinsToPlayer(p, _getNumberOfPlayersCardsWithTypeAndName(p, "person", "joker")))
-        })
-        return
-      }
-    }
-  }
   dispatch({ type: OFFER_CARD, card: topCard })
   dispatch(removeTopCardFromDeck())
-  //because the card might be the last one
-  if(!getAmountOfCardsOnDeck(getState())){
-    dispatch(moveDiscardPileToDeck())
-    dispatch(shuffleDeck())
-  }
 }
