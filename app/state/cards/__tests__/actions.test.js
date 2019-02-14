@@ -38,7 +38,7 @@ describe("Cards actions", ()=>{
 
   it("should add cards to discard pile", ()=>{
     const discardPile = getDiscardPile(store.getState())
-    addCardsToDiscardPile(cards)(store.dispatch)
+    store.dispatch(addCardsToDiscardPile(cards))
     const newDiscardPile = getDiscardPile(store.getState())
     expect(newDiscardPile.length).toBe(discardPile.length + cards.length)
   })
@@ -46,13 +46,13 @@ describe("Cards actions", ()=>{
   it("should empty discard pile", ()=>{
     //to make sure that something is in the discard pile
     store.dispatch({ type: ADD_CARDS_TO_DISCARD_PILE, cards })
-    emptyDiscardPile()(store.dispatch)
+    store.dispatch(emptyDiscardPile())
     expect(getDiscardPile(store.getState()).length).toBe(0)
   })
 
   it("should add cards to deck", ()=>{
     const deck = getDeck(store.getState())
-    addCardsToDeck(cards)(store.dispatch)
+    store.dispatch(addCardsToDeck(cards))
     const newDeck = getDeck(store.getState())
     expect(newDeck.length).toBe(deck.length + cards.length)
   })
@@ -60,7 +60,7 @@ describe("Cards actions", ()=>{
   it("should remove the top card from the deck", ()=>{
     const deck = getDeck(store.getState())
     const topCard = deck[0]
-    removeTopCardFromDeck()(store.dispatch)
+    store.dispatch(removeTopCardFromDeck())
     const newDeck = getDeck(store.getState())
     const newTopCard = newDeck[0]
     expect(deck.length - 1).toBe(newDeck.length)
@@ -95,7 +95,7 @@ describe("Cards actions", ()=>{
     //to make sure there are some offered cards
     cards.map(card => store.dispatch({ type: OFFER_CARD, card }))
     const offeredCards = getOfferedCards(store.getState())
-    emptyOfferedCards()(store.dispatch, store.getState)
+    store.dispatch(emptyOfferedCards())
     const newOfferedCards = getOfferedCards(store.getState())
     expect(newOfferedCards.length).toBe(0)
   })
@@ -105,7 +105,7 @@ describe("Cards actions", ()=>{
     store.dispatch({ type: ADD_CARDS_TO_DISCARD_PILE, cards })
     const discardPile = getDiscardPile(store.getState())
     const deck = getDeck(store.getState())
-    moveDiscardPileToDeck()(store.dispatch, store.getState)
+    store.dispatch(moveDiscardPileToDeck())
     const newDiscardPile = getDiscardPile(store.getState())
     const newDeck = getDeck(store.getState())
     expect(newDiscardPile.length).toBe(0);

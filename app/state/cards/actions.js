@@ -35,6 +35,10 @@ export const emptyOfferedCards = () => ({ type: EMPTY_OFFERED_CARDS })
 */
 export const addCardsToDiscardPile = cards => ({ type: ADD_CARDS_TO_DISCARD_PILE, cards })
 
+/**
+*
+*/
+export const addCardToOfferedCards = card => ({ type: OFFER_CARD, card })
 
 /**
 *
@@ -87,6 +91,6 @@ export const moveDiscardPileToDeck = () => (dispatch, getState) => {
 */
 export const offerCard = card => (dispatch, getState) => {
   const card = getTopCardOnDeck(getState())
-  dispatch({ type: OFFER_CARD, card })
+  dispatch(addCardToOfferedCards(card))
   dispatch(removeTopCardFromDeck())
 }

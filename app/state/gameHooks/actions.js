@@ -1,3 +1,11 @@
+/**
+* GAME HOOKS
+* ----------
+* The actions in this file are related to the cycle of the game
+* and are triggered in order to run some of the side effects such as
+* moving cards, moving gold between players etc.
+*/
+
 import {
   moveOfferedCardsToDiscardPile
 } from '../cards/actions'
@@ -8,6 +16,13 @@ import {
 */
 export const discoverPhaseStarts = () => (dispatch, getState) => {
   console.log('DISCOVER PHASE STARTS!')
+}
+
+/**
+*
+*/
+export const offerCard = () => (dispatch, getState) => {
+
 }
 
 /**
