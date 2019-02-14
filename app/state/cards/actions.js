@@ -26,18 +26,18 @@ import {
 } from '../players/actions'
 
 /**
-* @tested
+*
 */
 export const emptyOfferedCards = () => ({ type: EMPTY_OFFERED_CARDS })
 
 /**
-* @tested
+*
 */
 export const addCardsToDiscardPile = cards => ({ type: ADD_CARDS_TO_DISCARD_PILE, cards })
 
 
 /**
-* @tested
+*
 */
 export const addCardsToDeck = cards => ({ type: ADD_CARDS_TO_DECK, cards })
 
@@ -47,17 +47,17 @@ export const addCardsToDeck = cards => ({ type: ADD_CARDS_TO_DECK, cards })
 export const shuffleDeck = () => ({ type: SHUFFLE_DECK })
 
 /**
-* @tested
+*
 */
 export const emptyDiscardPile = () => ({ type: EMPTY_DISCARD_PILE })
 
 /**
-* @tested
+*
 */
 export const removeTopCardFromDeck = () => ({ type: REMOVE_TOP_CARD_FROM_DECK })
 
 /**
-* @tested
+*
 */
 export const moveTopCardToDiscardPile = () => (dispatch, getState) => {
   const topCard = getTopCardOnDeck(getState())
@@ -66,7 +66,7 @@ export const moveTopCardToDiscardPile = () => (dispatch, getState) => {
 }
 
 /**
-* @tested
+*
 */
 export const moveOfferedCardsToDiscardPile = () => (dispatch, getState) => {
   dispatch(addCardsToDiscardPile(getOfferedCards(getState())))
@@ -74,9 +74,7 @@ export const moveOfferedCardsToDiscardPile = () => (dispatch, getState) => {
 }
 
 /**
-* Because when the deck runs out of cards, we want to fill it
-* with the cards from discard pile and shuffle them
-* @tested
+*
 */
 export const moveDiscardPileToDeck = () => (dispatch, getState) => {
   dispatch(addCardsToDeck(getDiscardPile(getState())))
@@ -85,8 +83,7 @@ export const moveDiscardPileToDeck = () => (dispatch, getState) => {
 }
 
 /**
-* This action takes the card from the top of the deck
-* and offers it.
+*
 */
 export const offerCard = card => (dispatch, getState) => {
   const card = getTopCardOnDeck(getState())
