@@ -1,3 +1,7 @@
+import {
+  moveOfferedCardsToDiscardPile
+} from '../cards/actions'
+
 
 /**
 *
@@ -29,6 +33,7 @@ export const newPlayerInTradingPhase = () => (dispatch, getState) => {
 */
 export const tradingPhaseEnds = () => (dispatch, getState) => {
   console.log('TRADING PHASE ENDS!')
+  dispatch(moveOfferedCardsToDiscardPile())
 }
 
 /**

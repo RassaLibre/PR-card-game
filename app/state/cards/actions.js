@@ -26,70 +26,35 @@ import {
 } from '../players/actions'
 
 /**
-*
+* @tested
 */
-const _isShipDefeated = (ship, activePlayer) => {
-  //cannot be defeated
-  if(!ship.defence) return false
-  else{ //see if the player can defeat it
-    if(activePlayer.defence >= ship.defence) return true
-    else return false
-  }
-}
-
-/**
-*
-*/
-const _getNumberOfPlayersCardsWithTypeAndName = (player, type, name) => {
-  return player.cards.reduce(
-    (prev, curr)=> {
-      if(curr.name === name && curr.type === type) prev++
-      return prev
-    }
-  ,0)
-}
+export const emptyOfferedCards = () => ({ type: EMPTY_OFFERED_CARDS })
 
 /**
 * @tested
 */
-export const emptyOfferedCards = () => dispatch => {
-  dispatch({ type: EMPTY_OFFERED_CARDS })
-}
+export const addCardsToDiscardPile = cards => ({ type: ADD_CARDS_TO_DISCARD_PILE, cards })
+
 
 /**
 * @tested
 */
-export const addCardsToDiscardPile = (cards) => dispatch => {
-  dispatch({ type: ADD_CARDS_TO_DISCARD_PILE, cards })
-}
-
-/**
-* @tested
-*/
-export const addCardsToDeck = (cards) => dispatch => {
-  dispatch({ type: ADD_CARDS_TO_DECK, cards })
-}
+export const addCardsToDeck = cards => ({ type: ADD_CARDS_TO_DECK, cards })
 
 /**
 *
 */
-export const shuffleDeck = () => dispatch => {
-  dispatch({ type: SHUFFLE_DECK })
-}
+export const shuffleDeck = () => ({ type: SHUFFLE_DECK })
 
 /**
 * @tested
 */
-export const emptyDiscardPile = () => dispatch => {
-  dispatch({ type: EMPTY_DISCARD_PILE })
-}
+export const emptyDiscardPile = () => ({ type: EMPTY_DISCARD_PILE })
 
 /**
 * @tested
 */
-export const removeTopCardFromDeck = () => dispatch => {
-  dispatch({ type: REMOVE_TOP_CARD_FROM_DECK })
-}
+export const removeTopCardFromDeck = () => ({ type: REMOVE_TOP_CARD_FROM_DECK })
 
 /**
 * @tested
@@ -124,7 +89,7 @@ export const moveDiscardPileToDeck = () => (dispatch, getState) => {
 * and offers it.
 */
 export const offerCard = card => (dispatch, getState) => {
-  const topCard = getTopCardOnDeck(getState())
-  dispatch({ type: OFFER_CARD, card: topCard })
+  const card = getTopCardOnDeck(getState())
+  dispatch({ type: OFFER_CARD, card })
   dispatch(removeTopCardFromDeck())
 }
