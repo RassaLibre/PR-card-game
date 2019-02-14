@@ -21,8 +21,7 @@ class Deck extends React.PureComponent{
 	*
 	*/
 	handleClick(){
-		if(this.props.onClick)
-			this.props.onClick();
+		this.props.onClick()
 	}
 
 	/**

@@ -47,7 +47,7 @@ class App extends React.Component{
 				<span>Current player: </span>
 				<span>{activePhase.activePlayer.name}</span>
 				<button onClick={nextStep}>Next step</button>
-				{(phases.activePhase) ? <TradePhase/> : <DiscoverPhase/> }
+				{this.props.ac === "DISCOVER" ? <DiscoverPhase/> : <TradePhase/> }
 				<div className="players">
 	        {players.map((player)=>{
 	          return (

@@ -6,7 +6,7 @@ import OfferedCards from "../../components/OfferedCards/OfferedCards";
 import Deck from "../../components/Deck/Deck";
 import {
   offerCard
-} from '../../state/cards/actions'
+} from '../../state/UIResponders/actions'
 import {
   getActivePlayerOfActivePhase
 } from "../../state/players/selectors";
@@ -31,13 +31,13 @@ class DiscoverPhase extends React.Component{
   *
   */
   render(){
-    const { cards, offerCard } = this.props
+    const { cards } = this.props
     return(
       <div className="board">
         <DiscardPile cards={cards.discardPile}/>
         <Deck
           amountOfCards={cards.deck.length}
-          onClick={offerCard}/>
+          onClick={this.props.offerCard}/>
         <OfferedCards cards={cards.offeredCards}/>
       </div>
     )

@@ -5,3 +5,7 @@
 * such as clicks on the deck, click on the "End round" button
 * etc.
 */
+
+export const offerCard = () => (dispatch, getState) => {
+  console.log('OFFER CARD!')
+}
