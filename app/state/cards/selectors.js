@@ -1,15 +1,26 @@
-export const getTopCardOnDeck = ({ cards: { deck } }) => deck[0]
+import { createSelector } from 'reselect'
+import { CARD_TYPES } from './consts'
 
-export const getAmountOfCardsOnDeck = ({ cards: { deck } }) => deck.length
+export const getDeck = state => state.cards.deck
 
-export const getOfferedCards = ({ cards: { offeredCards } }) => offeredCards
+export const getOfferedCards = state => state.cards.offeredCards
 
-export const getDiscardPile = ({ cards: { discardPile } }) => discardPile
+export const getDiscardPile = state => state.cards.discardPile
 
-export const getDeck = ({ cards: { deck } }) => deck
+export const getTopCardOnDeck = createSelector(getDeck, deck => deck[0])
 
-export const getOfferedShips = ({ cards: { offeredCards } }) =>
-  offeredCards.filter(c => c.type === "ship")
+export const getAmountOfCardsOnDeck = createSelector(getDeck, deck => deck.length)
 
-export const getOfferedShipsWithColor = ({ cards: { offeredCards } }, color) =>
-  offeredCards.filter(c => c.type === "ship" && c.color === color)
+export const getOfferedShips = createSelector(getOfferedCards,
+  offeredCards => offeredCards.filter(card => card.type === CARD_TYPES.SHIP)
+)
+
+export const getOfferedColors = createSelector(getOfferedShips, ships =>
+  ships.reduce((colors, ship) => {
+    if(!colors.includes(ship.color))
+      colors.push(ship.color)
+    return colors
+  }, [])
+)
+
+export const getNumberOfOfferedColors = createSelector(getOfferedColors, colors => colors.length)

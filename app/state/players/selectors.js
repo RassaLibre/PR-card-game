@@ -1,40 +1,55 @@
-import { createSelector } from 'reselect';
-import {
-  getActivePlayerIndex
-} from '../phases/selectors'
-
+import { createSelector } from 'reselect'
+import { getActivePlayerIndex } from '../phases/selectors'
+import { PERSON_TYPES, CARD_TYPES } from '../cards/consts/index.js'
+import { getNumberOfOfferedColors } from '../cards/selectors'
 /**
 *
 */
-const _hasJoker = (player) => {
-  let hasJoker = false
-  player.cards.map(c => {
-    if(c.type === "person" && c.name === "joker") hasJoker = true
-  })
-  return hasJoker
-};
-
-/**
-*
-*/
-const _extendPlayerWithCalculatedValues = (player) => {
-  let influence = player.cards.reduce((prev, currentCard) => {
-    return prev + currentCard.influence;
-  }, 0);
-  let defence = player.cards.reduce((prev, currentCard) => {
-    if(currentCard.type === "person" && (currentCard.name === "pirate" || currentCard.name === "sailor")){
-      prev += currentCard.defence;
+const enhancePlayer = (player, numberOfOfferedColors) => {
+  let influence = 0 //TODO
+  let enhancingProps = {
+    influence: 0,
+    defence: 0,
+    turnsInDiscoverPhase: 1,
+    perFlush: 0,
+    hiringDiscount: 0,
+    fiveAndMoreOfferedBonus: 0,
+    twoOrTreeOfferedBonus: 0
+  }
+  player.cards.map(card => {
+    enhancingProps.influence += card.influence
+    if(card.type !== CARD_TYPES.PERSON)
+      return null
+    switch(card.name){
+      case PERSON_TYPES.MADAM:
+        enhancingProps.hiringDiscount += 1
+        break
+      case PERSON_TYPES.JOKER:
+        enhancingProps.perFlush += 1
+        break
+      case PERSON_TYPES.CAPTAIN:
+        enhancingProps.twoOrTreeOfferedBonus += 1
+        break
+      case PERSON_TYPES.ADMIRAL:
+        enhancingProps.fiveAndMoreOfferedBonus += 2
+        break
+      case PERSON_TYPES.GOVERNOR:
+        enhancingProps.turnsInDiscoverPhase += 1
+        break
+      case PERSON_TYPES.SAILOR:
+      case PERSON_TYPES.PIRATE:
+        enhancingProps.defence += card.defence
+        break
+      default:
+        break
     }
-    return prev;
-  }, 0);
-  return { ...player, influence, defence };
+    if(numberOfOfferedColors === 4)
+      enhancingProps.turnsInDiscoverPhase += 1
+    if(numberOfOfferedColors === 5)
+      enhancingProps.turnsInDiscoverPhase += 2
+  })
+  return { ...player, ...enhancingProps }
 }
-
-/**
-*
-*/
-export const getPlayerWithId =
-  ({ players }, playerId) => _extendPlayerWithCalculatedValues(players.find(p => p.id === playerId))
 
 /**
 *
@@ -42,29 +57,22 @@ export const getPlayerWithId =
 export const getPlayers = (state) => state.players
 
 /**
-* Returns an active player from an active phase
-*/
-export const getActivePlayerOfActivePhase =
-  createSelector([ getActivePlayerIndex, getPlayers ], ( activePlayerIndex, players ) =>
-    _extendPlayerWithCalculatedValues(players[activePlayerIndex]) )
-
-/**
 *
 */
-export const getPlayersWithJoker = ({ players }) => players.filter(_hasJoker)
+export const getEnhancedPlayers =
+  createSelector(getPlayers, getNumberOfOfferedColors,
+    (players, numberOfOfferedColors) =>
+      players.map(p => enhancePlayer(p, numberOfOfferedColors))
+  )
 
-/**
-*
-*/
-export const getNextPlayerIndex = ({ players }, currentIndex) => {
-  if(players[currentIndex + 1]) return currentIndex + 1
-  else return 0
-}
 
-/**
-* A player has a some values which are computed
-* based on the cards the player has. The selector enhances
-* the player object stored in the state with these values
-*/
-export const getPlayersComputedValues =
-  createSelector([ getPlayers ], players => players.map(_extendPlayerWithCalculatedValues))
+export const getNextPlayerIndex =
+  createSelector(getPlayers, (_state, currentIndex) => currentIndex,
+    (players, currentIndex) => {
+      if(players[currentIndex + 1]) return currentIndex + 1
+      else return 0
+    }
+  )
+
+export const getActiveEnhancedPlayerOfActivePhase =
+  createSelector(getActivePlayerIndex, getEnhancedPlayers, (index, enhancePlayers) => enhancePlayers[index] )

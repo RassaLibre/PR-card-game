@@ -2,11 +2,10 @@ import {
   addCoinsToPlayer
 } from '../actions'
 
-import {
-  getPlayerWithId
-} from '../selectors'
-
 import RootReducer from '../../../RootReducer'
+
+const getPlayerById = ({ players }, playerId) =>
+  players.find(p => p.id === playerId)
 
 describe("Players actions", ()=>{
 
@@ -17,9 +16,9 @@ describe("Players actions", ()=>{
   it('Should add coints to the player', ()=>{
     const playerId = 1
     const coinsToBeAdded = 2
-    const initPlayer = getPlayerWithId(store.getState(), playerId)
+    const initPlayer = getPlayerById(store.getState(), playerId)
     addCoinsToPlayer(playerId, coinsToBeAdded)(store.dispatch)
-    const updatedPlayer = getPlayerWithId(store.getState(), playerId)
+    const updatedPlayer = getPlayerById(store.getState(), playerId)
     expect(initPlayer.coins + coinsToBeAdded).toBe(updatedPlayer.coins)
   })
 

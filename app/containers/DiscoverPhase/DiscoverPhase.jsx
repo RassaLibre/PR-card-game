@@ -8,7 +8,7 @@ import {
   offerCard
 } from '../../state/UIResponders/actions'
 import {
-  getActivePlayerOfActivePhase
+  getActiveEnhancedPlayerOfActivePhase
 } from "../../state/players/selectors";
 import {
   getActivePhase
@@ -64,7 +64,7 @@ const mapStateToProps = (state) => {
     phases: state.phases,
     activePhase: {
       ...getActivePhase(state),
-      activePlayer: getActivePlayerOfActivePhase(state)
+      activePlayer: getActiveEnhancedPlayerOfActivePhase(state)
     },
   }
 };

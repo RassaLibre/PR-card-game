@@ -6,8 +6,8 @@ import TradePhase from '../containers/TradePhase/TradePhase'
 import "./_App.scss";
 
 import {
-	getPlayersComputedValues,
-	getActivePlayerOfActivePhase
+	getEnhancedPlayers,
+	getActiveEnhancedPlayerOfActivePhase
 } from "../state/players/selectors";
 
 import {
@@ -78,13 +78,13 @@ App.propTypes = {};
 */
 const mapStateToProps = (state) => {
 	return {
-		players: getPlayersComputedValues(state),
+		players: getEnhancedPlayers(state),
 		phases: state.phases,
 		numOfOfferedCards: state.cards.offeredCards.length,
 		ac: state.phases.activePhase,
 		activePhase: {
 			...getActivePhase(state),
-			activePlayer: getActivePlayerOfActivePhase(state)
+			activePlayer: getActiveEnhancedPlayerOfActivePhase(state)
 		},
 	}
 };

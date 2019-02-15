@@ -5,7 +5,7 @@ import DiscardPile from "../../components/DiscardPile/DiscardPile";
 import OfferedCards from "../../components/OfferedCards/OfferedCards";
 import Deck from "../../components/Deck/Deck";
 import {
-  getActivePlayerOfActivePhase
+  getActiveEnhancedPlayerOfActivePhase
 } from "../../state/players/selectors";
 import {
   getActivePhase
@@ -60,7 +60,7 @@ const mapStateToProps = (state) => {
     phases: state.phases,
     activePhase: {
       ...getActivePhase(state),
-      activePlayer: getActivePlayerOfActivePhase(state)
+      activePlayer: getActiveEnhancedPlayerOfActivePhase(state)
     },
   }
 };
