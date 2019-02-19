@@ -9,6 +9,5 @@
 import { offerTopFromDeck } from '../cards/actions'
 
 export const offerCard = () => (dispatch, getState) => {
-  console.log('OFFER CARD!')
   dispatch(offerTopFromDeck())
 }

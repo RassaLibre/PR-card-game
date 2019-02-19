@@ -9,6 +9,18 @@
 import {
   moveOfferedCardsToDiscardPile
 } from '../cards/actions'
+import {
+  endDiscoverPhaseAbruptly
+} from '../phases/actions'
+import {
+  rewardPlayersForFlush
+} from '../players/actions'
+import {
+  areTwoShipsWithSameColorOffered
+} from '../cards/selectors'
+import {
+  getActiveEnhancedPlayerOfActivePhase
+} from '../players/selectors'
 import { CARD_TYPES } from '../cards/consts/index.js'
 
 /**
@@ -22,17 +34,22 @@ export const discoverPhaseStarts = () => (dispatch, getState) => {
 *
 */
 export const cardOffered = card => (dispatch, getState) => {
+  const player = getActiveEnhancedPlayerOfActivePhase(getState())
+  console.log(player)
   switch(card.type){
     case CARD_TYPES.SHIP:
-      //  check if the boat is of redundant colour
-      //    if yes, check if the player can defeat it
-      //      if yes, remove the card to discard pile
-      //      if not, does any player has a joker?
-      //        if yes, give them coins
-      //        end of the round
-      //    if no, check if the player has more than 4 different colours
-      //      if the player has 4 increase the amount of turns by 1
-      //      if the player has 5 increase the amount of turns by 2
+      if(areTwoShipsWithSameColorOffered(getState())){
+        if(card.defence !== 0 && player.defence >= card.defence){
+          //  the player has successfully defeated the ship
+          console.log('PLAYER HAS SUCCESSFULLY A BOAT')
+          dispatch(discardLastOfferedCard())
+        } else {
+          //  the player did not defeat the ship
+          console.log('PLAYER LOSES TURN!')
+          dispatch(endDiscoverPhaseAbruptly())
+          dispatch(rewardPlayersForFlush())
+        }
+      }
       break
     case CARD_TYPES.EXPEDITION:
       break
@@ -73,7 +90,6 @@ export const newPlayerInTradingPhase = () => (dispatch, getState) => {
 */
 export const tradingPhaseEnds = () => (dispatch, getState) => {
   console.log('TRADING PHASE ENDS!')
-  dispatch(moveOfferedCardsToDiscardPile())
 }
 
 /**
@@ -81,6 +97,7 @@ export const tradingPhaseEnds = () => (dispatch, getState) => {
 */
 export const roundOver = () => (dispatch, getState) => {
   console.log('THE ROUND ENDS!')
+  dispatch(moveOfferedCardsToDiscardPile())
 }
 
 export default {

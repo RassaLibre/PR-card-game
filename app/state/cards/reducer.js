@@ -6,7 +6,8 @@ import {
   ADD_CARDS_TO_DISCARD_PILE,
   ADD_CARDS_TO_DECK,
   SHUFFLE_DECK,
-  EMPTY_DISCARD_PILE
+  EMPTY_DISCARD_PILE,
+  DISCARD_LAST_OFFERED_CARD
 } from './consts'
 import {
   getRandomIntBetween
@@ -42,6 +43,8 @@ const discardPile = (state = [], action) => {
 
 const offeredCards = (state = [], action) => {
   switch(action.type){
+    case DISCARD_LAST_OFFERED_CARD:
+      return [...state.slice(0, -1)]
     case EMPTY_OFFERED_CARDS:
       return []
     case OFFER_CARD:

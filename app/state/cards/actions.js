@@ -5,7 +5,8 @@ import {
   ADD_CARDS_TO_DISCARD_PILE,
   ADD_CARDS_TO_DECK,
   SHUFFLE_DECK,
-  EMPTY_DISCARD_PILE
+  EMPTY_DISCARD_PILE,
+  DISCARD_LAST_OFFERED_CARD
 } from './consts'
 
 import {
@@ -58,3 +59,6 @@ export const offerTopFromDeck = () => (dispatch, getState) => {
   dispatch(removeTopCardFromDeck())
   dispatch(gameHooks.cardOffered(card))
 }
+
+export const discardLastOfferedCard = dispatch =>
+  dispatch({ type: DISCARD_LAST_OFFERED_CARD })

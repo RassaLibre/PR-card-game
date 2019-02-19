@@ -1,5 +1,5 @@
 import { createSelector } from 'reselect'
-import { CARD_TYPES } from './consts'
+import { CARD_TYPES } from './consts/index.js'
 
 export const getDeck = state => state.cards.deck
 
@@ -24,3 +24,15 @@ export const getOfferedColors = createSelector(getOfferedShips, ships =>
 )
 
 export const getNumberOfOfferedColors = createSelector(getOfferedColors, colors => colors.length)
+
+export const areTwoShipsWithSameColorOffered = createSelector(getOfferedShips, ships => {
+  let sameColouredShipsOffered = false
+  const colors = []
+  for(let ship of ships){
+    if(colors.includes(ship.color))
+      sameColouredShipsOffered = true
+    else
+      colors.push(ship.color)
+  }
+  return sameColouredShipsOffered
+})

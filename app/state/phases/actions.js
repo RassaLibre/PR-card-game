@@ -44,6 +44,20 @@ export const setDiscoverPhaseActivePlayer = playerIndex =>
   ({ type: SET_DISCOVER_PHASE_ACTIVE_PLAYER, playerIndex })
 
 /**
+* Gets triggered when the player has offered a new boat on an
+* already offered color and is not able to defeat it.
+*/
+export const endDiscoverPhaseAbruptly = () => (dispatch, getState) => {
+  const discoverActivePlayerIndex = getDiscoverPhaseActivePlayerIndex(getState())
+  const newDiscoverPlayerIndex = getNextPlayerIndex(getState(), discoverActivePlayerIndex)
+  dispatch(discoverPhaseEnds())
+  dispatch(roundOver())
+  dispatch(setDiscoverPhaseActivePlayer(newDiscoverPlayerIndex))
+  dispatch(setTradePhaseActivePlayer(newDiscoverPlayerIndex))
+  dispatch(discoverPhaseStarts())
+}
+
+/**
 * This function just controls the flow in the game. It switches
 * phases and active players
 */
