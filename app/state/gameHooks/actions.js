@@ -13,15 +13,22 @@ import {
   endDiscoverPhaseAbruptly
 } from '../phases/actions'
 import {
-  rewardPlayersForFlush
+  rewardPlayersForFlush,
+  removeCoinsFromPlayer,
+  addCoinsToPlayer
 } from '../players/actions'
 import {
   areTwoShipsWithSameColorOffered
 } from '../cards/selectors'
 import {
-  getActiveEnhancedPlayerOfActivePhase
+  getActiveEnhancedPlayerOfActivePhase,
+  getPlayersWithTwelveOrMoreCoins,
+  getPlayersWithMaxDefence,
+  getPlayersWithMinInfluence
 } from '../players/selectors'
-import { CARD_TYPES } from '../cards/consts/index.js'
+import { CARD_TYPES, TAX_TYPES } from '../cards/consts/index.js'
+
+const REWARD_FOR_TAXES = 1
 
 /**
 *
@@ -35,7 +42,6 @@ export const discoverPhaseStarts = () => (dispatch, getState) => {
 */
 export const cardOffered = card => (dispatch, getState) => {
   const player = getActiveEnhancedPlayerOfActivePhase(getState())
-  console.log(player)
   switch(card.type){
     case CARD_TYPES.SHIP:
       if(areTwoShipsWithSameColorOffered(getState())){
@@ -58,9 +64,16 @@ export const cardOffered = card => (dispatch, getState) => {
       //    if yes, lower the price by one per each madam
       break
     case CARD_TYPES.TAX:
-      //  check if any player has more than 12 coins
-      //    if yes, return bigger half
-      //  execute the subtype of taxes
+      const playersToBeTaxed = getPlayersWithTwelveOrMoreCoins(getState())
+      for(let player of playersToBeTaxed)
+        dispatch(removeCoinsFromPlayer(player.id, Math.ceil(player.coins / 2)))
+      if(card.name === TAX_TYPES.MAX_DEFENCE)
+        getPlayersWithMaxDefence(getState())
+          .map(player => dispatch(addCoinsToPlayer(player.id, REWARD_FOR_TAXES)))
+      else if(card.name === TAX_TYPES.MIN_INFLUENCE)
+        getPlayersWithMinInfluence(getState())
+          .map(player => dispatch(addCoinsToPlayer(player.id, REWARD_FOR_TAXES)))
+      else throw new Error(`Unknown tax subtype ${card.name}`)
       break
     default:
       throw new Error(`Unknown card type ${card.type}`)

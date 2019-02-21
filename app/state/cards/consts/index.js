@@ -34,6 +34,11 @@ export const PERSON_TYPES = {
   GOVERNOR: 'governor'
 }
 
+export const TAX_TYPES = {
+  MAX_DEFENCE: 'MAX_DEFENCE',
+  MIN_INFLUENCE: 'MIN_INFLUENCE',
+}
+
 export const DECK_DEFAULT_STATE = [
   { name: "Salupa", type: CARD_TYPES.SHIP, defence: 1, coins: 1, color: BOAT_COLORS.YELLOW },
   { name: "Salupa", type: CARD_TYPES.SHIP, defence: 1, coins: 1, color: BOAT_COLORS.YELLOW },
@@ -167,8 +172,8 @@ export const DECK_DEFAULT_STATE = [
   {name: PERSON_TYPES.GOVERNOR, "type": CARD_TYPES.PERSON, influence: 0, price: 8},
   {name: PERSON_TYPES.GOVERNOR, "type": CARD_TYPES.PERSON, influence: 0, price: 8},
 
-  {name: "maxdefence", "type": CARD_TYPES.TAX},
-  {name: "maxdefence", "type": CARD_TYPES.TAX},
-  {name: "mininfluence", "type": CARD_TYPES.TAX},
-  {name: "mininfluence", "type": CARD_TYPES.TAX}
+  {name: TAX_TYPES.MAX_DEFENCE, "type": CARD_TYPES.TAX},
+  {name: TAX_TYPES.MAX_DEFENCE, "type": CARD_TYPES.TAX},
+  {name: TAX_TYPES.MIN_INFLUENCE, "type": CARD_TYPES.TAX},
+  {name: TAX_TYPES.MIN_INFLUENCE, "type": CARD_TYPES.TAX}
 ]

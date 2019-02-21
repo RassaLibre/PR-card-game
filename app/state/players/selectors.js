@@ -2,9 +2,7 @@ import { createSelector } from 'reselect'
 import { getActivePlayerIndex } from '../phases/selectors'
 import { PERSON_TYPES, CARD_TYPES } from '../cards/consts/index.js'
 import { getNumberOfOfferedColors } from '../cards/selectors'
-/**
-*
-*/
+
 const enhancePlayer = (player, numberOfOfferedColors) => {
   let influence = 0 //TODO
   let enhancingProps = {
@@ -51,20 +49,44 @@ const enhancePlayer = (player, numberOfOfferedColors) => {
   return { ...player, ...enhancingProps }
 }
 
-/**
-*
-*/
-export const getPlayers = (state) => state.players
+export const getPlayers = state => state.players
 
-/**
-*
-*/
 export const getEnhancedPlayers =
   createSelector(getPlayers, getNumberOfOfferedColors,
     (players, numberOfOfferedColors) =>
       players.map(p => enhancePlayer(p, numberOfOfferedColors))
   )
 
+export const getPlayersWithTwelveOrMoreCoins =
+  createSelector(getEnhancedPlayers,
+    players => players.filter(p => p.coins >= 12)
+  )
+
+export const getPlayersWithMaxDefence = createSelector(getEnhancedPlayers, players => {
+  const sortedPlayers = players.sort((a, b) => b.defence - a.defence)
+  const playersWithMaxDefence = []
+  for(let player of sortedPlayers){
+    if(!playersWithMaxDefence.length)
+      playersWithMaxDefence.push(player)
+    else if(player.defence === playersWithMaxDefence[0].defence)
+      playersWithMaxDefence.push(player)
+    else break
+  }
+  return playersWithMaxDefence
+})
+
+export const getPlayersWithMinInfluence = createSelector(getEnhancedPlayers, players => {
+  const sortedPlayers = players.sort((a, b) => a.influence - a.influence)
+  const playersWithMinInfluence = []
+  for(let player of sortedPlayers){
+    if(!playersWithMinInfluence.length)
+      playersWithMinInfluence.push(player)
+    else if(player.influence === playersWithMinInfluence[0].influence)
+      playersWithMinInfluence.push(player)
+    else break
+  }
+  return playersWithMinInfluence
+})
 
 export const getNextPlayerIndex =
   createSelector(getPlayers, (_state, currentIndex) => currentIndex,
