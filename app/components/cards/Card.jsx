@@ -1,23 +1,33 @@
-import React from "react";
-import "./_Card.scss";
+import React from "react"
+import { TAX_TYPES } from '../../state/cards/consts/index'
+import "./_Card.scss"
 /**
 *
 */
 class Card extends React.PureComponent{
 
 	constructor(args){
-		super(args);
-		this.state = {};
+		super(args)
+		this.state = {}
+		this.handleClick = this.handleClick.bind(this)
+	}
+
+	handleClick(e){
+		this.props.onClick(this.props.card)
 	}
 
 	render(){
 		return(
-			<div className="card">
+			<div className="card" onClick={this.handleClick}>
 				{this.props.children}
 			</div>
 		);
 	}
 
+}
+
+Card.propTypes = {
+	onClick: React.PropTypes.func
 }
 
 /**
@@ -32,7 +42,7 @@ export class ShipCard extends React.PureComponent{
 
 	render(){
 		return(
-			<Card>
+			<Card {...this.props}>
 				<div>
 					<div className="card__name" style={{backgroundColor: this.props.color, color: (this.props.color === "black") ? "white" : undefined}}>
 						<span>{this.props.name}</span>
@@ -59,7 +69,7 @@ export class ExpeditionCard extends React.PureComponent{
 
 	render(){
 		return(
-			<Card>
+			<Card {...this.props}>
 				<div>
 					<div className="card__name">
 						<span>{this.props.name}</span>
@@ -89,7 +99,7 @@ export class TraderCard extends React.PureComponent{
 
 	render(){
 		return(
-			<Card>
+			<Card {...this.props}>
 				<div>
 					<div className="card__name">
 						<span>{this.props.name}</span>
@@ -117,7 +127,7 @@ export class SettlerCard extends React.PureComponent{
 
 	render(){
 		return(
-			<Card>
+			<Card {...this.props}>
 				<div>
 					<div className="card__name">
 						<span>{this.props.name}</span>
@@ -145,7 +155,7 @@ export class CaptainCard extends React.PureComponent{
 
 	render(){
 		return(
-			<Card>
+			<Card {...this.props}>
 				<div>
 					<div className="card__name">
 						<span>{this.props.name}</span>
@@ -173,7 +183,7 @@ export class MonkCard extends React.PureComponent{
 
 	render(){
 		return(
-			<Card>
+			<Card {...this.props}>
 				<div>
 					<div className="card__name">
 						<span>{this.props.name}</span>
@@ -201,7 +211,7 @@ export class HandymanCard extends React.PureComponent{
 
 	render(){
 		return(
-			<Card>
+			<Card {...this.props}>
 				<div>
 					<div className="card__name">
 						<span>{this.props.name}</span>
@@ -229,7 +239,7 @@ export class SailorCard extends React.PureComponent{
 
 	render(){
 		return(
-			<Card>
+			<Card {...this.props}>
 				<div>
 					<div className="card__name">
 						<span>{this.props.name}</span>
@@ -257,7 +267,7 @@ export class PirateCard extends React.PureComponent{
 
 	render(){
 		return(
-			<Card>
+			<Card {...this.props}>
 				<div>
 					<div className="card__name">
 						<span>{this.props.name}</span>
@@ -285,7 +295,7 @@ export class MadamCard extends React.PureComponent{
 
 	render(){
 		return(
-			<Card>
+			<Card {...this.props}>
 				<div>
 					<div className="card__name">
 						<span>{this.props.name}</span>
@@ -313,7 +323,7 @@ export class JokerCard extends React.PureComponent{
 
 	render(){
 		return(
-			<Card>
+			<Card {...this.props}>
 				<div>
 					<div className="card__name">
 						<span>{this.props.name}</span>
@@ -341,7 +351,7 @@ export class AdmiralCard extends React.PureComponent{
 
 	render(){
 		return(
-			<Card>
+			<Card {...this.props}>
 				<div>
 					<div className="card__name">
 						<span>{this.props.name}</span>
@@ -369,7 +379,7 @@ export class GovernorCard extends React.PureComponent{
 
 	render(){
 		return(
-			<Card>
+			<Card {...this.props}>
 				<div>
 					<div className="card__name">
 						<span>{this.props.name}</span>
@@ -388,7 +398,7 @@ export class GovernorCard extends React.PureComponent{
 /**
 *
 */
-export class MaxDefenceTaxCard extends React.PureComponent{
+export class TaxCard extends React.PureComponent{
 
 	constructor(args){
 		super(args);
@@ -397,36 +407,15 @@ export class MaxDefenceTaxCard extends React.PureComponent{
 
 	render(){
 		return(
-			<Card>
+			<Card {...this.props}>
 				<div>
 					<div className="card__name">
 						<span>{this.props.name}</span>
 					</div>
-					<p>+1 coin for the player with maximum defence</p>
-				</div>
-			</Card>
-		);
-	}
-}
-
-/**
-*
-*/
-export class MinInfluenceTaxCard extends React.PureComponent{
-
-	constructor(args){
-		super(args);
-		this.state = {};
-	}
-
-	render(){
-		return(
-			<Card>
-				<div>
-					<div className="card__name">
-						<span>{this.props.name}</span>
-					</div>
-					<p>+1 coin for the player with minimum influence</p>
+					{this.props.name === TAX_TYPES.MAX_DEFENCE
+						? <p>+1 coin for the player with maximum defence</p>
+						: <p>+1 coin for the player with minimum influence</p>
+					}
 				</div>
 			</Card>
 		);

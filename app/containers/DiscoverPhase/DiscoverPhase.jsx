@@ -5,14 +5,15 @@ import DiscardPile from "../../components/DiscardPile/DiscardPile";
 import OfferedCards from "../../components/OfferedCards/OfferedCards";
 import Deck from "../../components/Deck/Deck";
 import {
-  offerCard
+  offerCard,
+  interactWithCardInDiscoverPhase
 } from '../../state/UIResponders/actions'
 import {
   getActiveEnhancedPlayerOfActivePhase
-} from "../../state/players/selectors";
+} from "../../state/players/selectors"
 import {
   getActivePhase
-} from "../../state/phases/selectors";
+} from "../../state/phases/selectors"
 
 /**
 *
@@ -31,14 +32,16 @@ class DiscoverPhase extends React.Component{
   *
   */
   render(){
-    const { cards } = this.props
+    const { onOfferedCardClick, cards, offerCard } = this.props
     return(
       <div className="board">
         <DiscardPile cards={cards.discardPile}/>
         <Deck
           amountOfCards={cards.deck.length}
-          onClick={this.props.offerCard}/>
-        <OfferedCards cards={cards.offeredCards}/>
+          onClick={offerCard}/>
+        <OfferedCards
+          cards={cards.offeredCards}
+          onCardClick={onOfferedCardClick}/>
       </div>
     )
   }
@@ -48,12 +51,12 @@ class DiscoverPhase extends React.Component{
 /**
 *
 */
-DiscoverPhase.defaultProps = {};
+DiscoverPhase.defaultProps = {}
 
 /**
 *
 */
-DiscoverPhase.propTypes = {};
+DiscoverPhase.propTypes = {}
 
 /**
 *
@@ -67,16 +70,17 @@ const mapStateToProps = (state) => {
       activePlayer: getActiveEnhancedPlayerOfActivePhase(state)
     },
   }
-};
+}
 
 const mapDispatchToProps = (dispatch) => {
   return bindActionCreators({
-    offerCard
+    offerCard,
+    onOfferedCardClick: interactWithCardInDiscoverPhase,
   }, dispatch)
-};
+}
 
 /**
 *
 */
-export default connect(mapStateToProps, mapDispatchToProps)(DiscoverPhase);
+export default connect(mapStateToProps, mapDispatchToProps)(DiscoverPhase)
 
