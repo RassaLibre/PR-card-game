@@ -13,6 +13,10 @@ import {
   endDiscoverPhaseAbruptly
 } from '../phases/actions'
 import {
+  getDiscoverPhaseActivePlayerIndex,
+  getTradePhaseActivePlayerIndex,
+} from '../phases/selectors'
+import {
   rewardPlayersForFlush,
   removeCoinsFromPlayer,
   addCoinsToPlayer
@@ -92,6 +96,28 @@ export const discoverPhaseEnds = () => (dispatch, getState) => {
 */
 export const tradingPhaseStarts = () => (dispatch, getState) => {
   console.log('TRADING PHASE STARTS!')
+}
+
+/**
+* Triggered when the user clicks on one of the offered
+* cards.
+*/
+export const playCard = card => (dispatch, getState) => {
+  const player = getActiveEnhancedPlayerOfActivePhase(getState()),
+    activeTradePhasePlayerIndex = getTradePhaseActivePlayerIndex(getState()),
+    activeDiscoverPhasePlayerIndex = getDiscoverPhaseActivePlayerIndex(getState())
+  switch(card.type){
+    case CARD_TYPES.SHIP:
+      break
+    case CARD_TYPES.EXPEDITION:
+      break
+    case CARD_TYPES.PERSON:
+      break
+    case CARD_TYPES.TAX:
+      break
+    default:
+      throw new Error(`Unknown card type ${card.type}`)
+  }
 }
 
 export const newPlayerInTradingPhase = () => (dispatch, getState) => {

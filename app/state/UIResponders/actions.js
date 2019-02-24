@@ -8,13 +8,15 @@
 
 import { offerTopFromDeck } from '../cards/actions'
 import { next } from '../phases/actions'
+import { playCard } from '../gameHooks/actions'
 
 export const offerCard = () => (dispatch, getState) => {
   dispatch(offerTopFromDeck())
 }
 
-export const interactWithCardInTradePhase = card => (dispatch, getState) => {
+export const interactWithCardInTradePhase = card => dispatch => {
   console.log('you just clicked', card)
+  dispatch(playCard(card))
 }
 
 export const interactWithCardInDiscoverPhase = card => dispatch => {
