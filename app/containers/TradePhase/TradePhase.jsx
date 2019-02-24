@@ -37,10 +37,10 @@ class TradePhase extends React.Component{
         <DiscardPile />
         <Deck
           amountOfCards={deck.length}
-          onClick={undefined}/>
+          onClick={undefined} />
         <OfferedCards
           cards={offeredCards}
-          onCardClick={onCardClick}/>
+          onCardClick={onCardClick} />
       </div>
     )
   }
@@ -50,12 +50,12 @@ class TradePhase extends React.Component{
 /**
 *
 */
-TradePhase.defaultProps = {};
+TradePhase.defaultProps = {}
 
 /**
 *
 */
-TradePhase.propTypes = {};
+TradePhase.propTypes = {}
 
 /**
 *
@@ -69,7 +69,7 @@ const mapStateToProps = (state) => {
       activePlayer: getActiveEnhancedPlayerOfActivePhase(state)
     },
   }
-};
+}
 
 const mapDispatchToProps = (dispatch) => ({
   ...bindActionCreators({
@@ -80,5 +80,5 @@ const mapDispatchToProps = (dispatch) => ({
 /**
 *
 */
-export default connect(mapStateToProps, mapDispatchToProps)(TradePhase);
+export default connect(mapStateToProps, mapDispatchToProps)(TradePhase)
 
