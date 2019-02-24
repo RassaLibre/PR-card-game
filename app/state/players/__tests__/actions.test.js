@@ -2,6 +2,10 @@ import {
   addCoinsToPlayer,
   removeCoinsFromPlayer,
 } from '../actions'
+import {
+  ADD_COINS_TO_PLAYER,
+  REMOVE_COINS_FROM_PLAYER
+} from '../consts'
 
 import RootReducer from '../../../RootReducer'
 
@@ -17,19 +21,21 @@ describe("Players actions", () => {
   it('Should add coins to the player', () => {
     const playerId = 1
     const coinsToBeAdded = 2
-    const initPlayer = getPlayerById(store.getState(), playerId)
-    store.dispatch(addCoinsToPlayer(playerId, coinsToBeAdded))
-    const updatedPlayer = getPlayerById(store.getState(), playerId)
-    expect(initPlayer.coins + coinsToBeAdded).toBe(updatedPlayer.coins)
+    expect(addCoinsToPlayer(playerId, coinsToBeAdded)).toEqual({
+      type: ADD_COINS_TO_PLAYER,
+      playerId,
+      numOfCoins: coinsToBeAdded
+    })
   })
 
   it('Should remove coins from the player', () => {
     const playerId = 1
     const coinsToBeRemoved = 2
-    const initPlayer = getPlayerById(store.getState(), playerId)
-    store.dispatch(removeCoinsFromPlayer(playerId, coinsToBeRemoved))
-    const updatedPlayer = getPlayerById(store.getState(), playerId)
-    expect(initPlayer.coins - coinsToBeRemoved).toBe(updatedPlayer.coins)
+    expect(removeCoinsFromPlayer(playerId, coinsToBeRemoved)).toEqual({
+      type: REMOVE_COINS_FROM_PLAYER,
+      playerId,
+      numOfCoins: coinsToBeRemoved
+    })
   })
 
 })
