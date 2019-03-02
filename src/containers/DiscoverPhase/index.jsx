@@ -1,9 +1,9 @@
 import React from 'react'
 import { connect } from 'react-redux'
 import { bindActionCreators } from 'redux'
-import DiscardPile from "../../components/DiscardPile/DiscardPile";
-import OfferedCards from "../../components/OfferedCards/OfferedCards";
-import Deck from "../../components/Deck/Deck";
+import DiscardPile from "../../components/DiscardPile";
+import OfferedCards from "../../components/OfferedCards";
+import Deck from "../../components/Deck";
 import {
   offerCard,
   interactWithCardInDiscoverPhase
@@ -16,22 +16,8 @@ import {
   getActivePhase
 } from "../../state/phases/selectors"
 
-/**
-*
-*/
-class DiscoverPhase extends React.Component{
+class DiscoverPhase extends React.Component {
 
-  /**
-  *
-  */
-  constructor(args){
-    super(args)
-    this.state = {}
-  }
-
-  /**
-  *
-  */
   render(){
     const { onOfferedCardClick, offerCard, offeredCards, discardPile, deck } = this.props
     return(
@@ -46,22 +32,12 @@ class DiscoverPhase extends React.Component{
       </div>
     )
   }
-
 }
 
-/**
-*
-*/
 DiscoverPhase.defaultProps = {}
 
-/**
-*
-*/
 DiscoverPhase.propTypes = {}
 
-/**
-*
-*/
 const mapStateToProps = (state) => {
   return {
     offeredCards: getEnhancedOfferedCards(state),

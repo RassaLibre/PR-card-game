@@ -1,12 +1,9 @@
-import React from "react";
-import "./_Player.scss";
+import React from "react"
+import "./styles.scss"
 
-class Player extends React.PureComponent{
+export default class Player extends React.PureComponent{
 
-	constructor(args){
-		super(args);
-		this.state = {};
-	}
+	state = {}
 
 	render(){
 		const {
@@ -20,6 +17,7 @@ class Player extends React.PureComponent{
 			hiringDiscount,
 			fiveAndMoreOfferedBonus,
 			twoOrTreeOfferedBonus,
+			isActive
 		} = this.props.player
 		return(
 			<div className="player" style={{backgroundColor: color}}>
@@ -34,28 +32,17 @@ class Player extends React.PureComponent{
 					<li>{twoOrTreeOfferedBonus + " bonus when offering 2-3"}</li>
 					<li>{fiveAndMoreOfferedBonus + " bonus when offering 5+"}</li>
 				</ul>
-				{(this.props.isActive) ? <p>Active!</p> : undefined}
+				{isActive ? <p>Active!</p> : undefined}
 			</div>
-		);
+		)
 	}
 
 }
 
-/**
-*
-*/
 Player.defaultProps = {
 	isActive: false
-};
+}
 
-/**
-*
-*/
 Player.propTypes = {
 
-};
-
-/**
-*
-*/
-export default Player;
+}

@@ -1,9 +1,9 @@
 import React from 'react'
 import { connect } from 'react-redux'
 import { bindActionCreators } from 'redux'
-import DiscardPile from "../../components/DiscardPile/DiscardPile"
-import OfferedCards from "../../components/OfferedCards/OfferedCards"
-import Deck from "../../components/Deck/Deck"
+import DiscardPile from "../../components/DiscardPile"
+import OfferedCards from "../../components/OfferedCards"
+import Deck from "../../components/Deck"
 import {
   getActiveEnhancedPlayerOfActivePhase
 } from "../../state/players/selectors"
@@ -14,22 +14,8 @@ import {
   interactWithCardInTradePhase
 } from '../../state/UIResponders/actions'
 
-/**
-*
-*/
 class TradePhase extends React.Component{
 
-  /**
-  *
-  */
-  constructor(args){
-    super(args)
-    this.state = {}
-  }
-
-  /**
-  *
-  */
   render(){
     const { onCardClick, cards: { deck, offeredCards } } = this.props
     return(
@@ -47,19 +33,6 @@ class TradePhase extends React.Component{
 
 }
 
-/**
-*
-*/
-TradePhase.defaultProps = {}
-
-/**
-*
-*/
-TradePhase.propTypes = {}
-
-/**
-*
-*/
 const mapStateToProps = (state) => {
   return {
     cards: state.cards,
@@ -77,8 +50,5 @@ const mapDispatchToProps = (dispatch) => ({
   }, dispatch)
 })
 
-/**
-*
-*/
 export default connect(mapStateToProps, mapDispatchToProps)(TradePhase)
 

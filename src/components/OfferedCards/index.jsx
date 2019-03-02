@@ -1,8 +1,8 @@
 import React from "react"
-import "./_OfferedCards.scss"
+import "./styles.scss"
 import Card from "../cards"
 
-class OfferedCards extends React.PureComponent{
+export default class OfferedCards extends React.PureComponent{
 
 	state = {}
 
@@ -10,7 +10,9 @@ class OfferedCards extends React.PureComponent{
 		const { onCardClick, cards } = this.props
 		return(
 			<div className="offeredCards">
-				{cards.map((card, index)=> <Card card={card} key={index} />)}
+				{cards.map((card, index)=>
+					<Card card={card} key={index} onClick={onCardClick} />
+				)}
 			</div>
 		)
 	}
@@ -22,5 +24,3 @@ OfferedCards.propTypes = {}
 OfferedCards.defaultProps = {
 	cards: []
 }
-
-export default OfferedCards

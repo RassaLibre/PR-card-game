@@ -1,18 +1,18 @@
-import React from 'react';
-import { connect } from 'react-redux';
-import Player from "./Player/Player";
-import DiscoverPhase from '../containers/DiscoverPhase/DiscoverPhase'
-import TradePhase from '../containers/TradePhase/TradePhase'
-import "./_App.scss";
+import React from 'react'
+import { connect } from 'react-redux'
+import Player from "./Player"
+import DiscoverPhase from '../containers/DiscoverPhase'
+import TradePhase from '../containers/TradePhase'
+import "./_App.scss"
 
 import {
 	getEnhancedPlayers,
 	getActiveEnhancedPlayerOfActivePhase
-} from "../state/players/selectors";
+} from "../state/players/selectors"
 
 import {
 	getActivePhase
-} from "../state/phases/selectors";
+} from "../state/phases/selectors"
 
 import {
 	next
@@ -22,18 +22,9 @@ import {
 	bindActionCreators
 } from 'redux'
 
-/**
-*
-*/
 class Application extends React.Component{
 
-	/**
-	*
-	*/
-	constructor(args){
-		super(args);
-		this.state = {};
-	}
+	state = {}
 
 	/**
 	*
@@ -49,33 +40,18 @@ class Application extends React.Component{
 				<button onClick={nextStep}>Next step</button>
 				{this.props.ac === "DISCOVER" ? <DiscoverPhase/> : <TradePhase/> }
 				<div className="players">
-	        {players.map((player)=>{
-	          return (
-	            <Player
-	              isActive={player.id === activePhase.activePlayer.id}
-	              key={player.id}
-	              player={player}/>
-	          );
-	        })}
+	        {players.map(player => (
+	         	<Player
+	          	isActive={player.id === activePhase.activePlayer.id}
+	            key={player.id}
+	            player={player}/>
+	         ))}
         </div>
 			</div>
-		);
+		)
 	}
 }
 
-/**
-*
-*/
-Application.defaultProps = {};
-
-/**
-*
-*/
-Application.propTypes = {};
-
-/**
-*
-*/
 const mapStateToProps = (state) => {
 	return {
 		players: getEnhancedPlayers(state),
@@ -85,15 +61,12 @@ const mapStateToProps = (state) => {
 			activePlayer: getActiveEnhancedPlayerOfActivePhase(state)
 		},
 	}
-};
+}
 
 const mapDispatchToProps = (dispatch) => {
 	return bindActionCreators({
 		nextStep: next
 	}, dispatch)
-};
+}
 
-/**
-*
-*/
-export default connect(mapStateToProps, mapDispatchToProps)(Application);
+export default connect(mapStateToProps, mapDispatchToProps)(Application)

@@ -1,46 +1,19 @@
 import React from "react"
-import "./_Deck.scss"
+import "./styles.scss"
 
-/**
-*
-*/
 class Deck extends React.PureComponent{
 
-	/**
-	*
-	*/
-	constructor(args){
-		super(args)
-		this.state = { showDialog: false }
-		this.handleClick = this.handleClick.bind(this)
-		this.handleMouseOver = this.handleMouseOver.bind(this)
-		this.handleMouseOut = this.handleMouseOut.bind(this)
-	}
+	state = { showDialog: false }
 
-	/**
-	*
-	*/
-	handleClick(){
+	handleClick = () =>
 		this.props.onClick()
-	}
 
-	/**
-	*
-	*/
-	handleMouseOver(){
+	handleMouseOver = () =>
 		this.setState({ showDialog: true })
-	}
 
-	/**
-	*
-	*/
-	handleMouseOut(){
+	handleMouseOut = () =>
 		this.setState({ showDialog: false })
-	}
 
-	/**
-	*
-	*/
 	render(){
 		const { onClick, amountOfCards } = this.props
 		const { showDialog } = this.state
@@ -61,19 +34,10 @@ class Deck extends React.PureComponent{
 
 }
 
-/**
-*
-*/
 Deck.defaultProps = {
 	onClick: undefined
 }
 
-/**
-*
-*/
 Deck.propTypes = {}
 
-/**
-*
-*/
 export default Deck

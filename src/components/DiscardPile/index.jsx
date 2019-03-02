@@ -1,22 +1,10 @@
 import React from "react"
-import "./_DiscardPile.scss"
+import "./styles.scss"
 
-/**
-*
-*/
-class DiscardPile extends React.PureComponent{
+export default class DiscardPile extends React.PureComponent {
 
-	/**
-	*
-	*/
-	constructor(args){
-		super(args)
-		this.state = {}
-	}
+	state = {}
 
-	/**
-	*
-	*/
 	render(){
 		const { cards } = this.props
 		return(
@@ -29,19 +17,8 @@ class DiscardPile extends React.PureComponent{
 
 }
 
-/**
-*
-*/
 DiscardPile.defaultProps = {
 	cards: []
 }
 
-/**
-*
-*/
 DiscardPile.propTypes = {}
-
-/**
-*
-*/
-export default DiscardPile
