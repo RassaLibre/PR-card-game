@@ -9,7 +9,8 @@ import {
   interactWithCardInDiscoverPhase
 } from '../../state/UIResponders/actions'
 import {
-  getActiveEnhancedPlayerOfActivePhase
+  getActiveEnhancedPlayerOfActivePhase,
+  getEnhancedOfferedCards,
 } from "../../state/players/selectors"
 import {
   getActivePhase
@@ -32,15 +33,15 @@ class DiscoverPhase extends React.Component{
   *
   */
   render(){
-    const { onOfferedCardClick, cards, offerCard } = this.props
+    const { onOfferedCardClick, cards, offerCard, offeredCards, discardPile, deck } = this.props
     return(
       <div className="board">
-        <DiscardPile cards={cards.discardPile}/>
+        <DiscardPile cards={discardPile}/>
         <Deck
-          amountOfCards={cards.deck.length}
+          amountOfCards={deck.length}
           onClick={offerCard}/>
         <OfferedCards
-          cards={cards.offeredCards}
+          cards={offeredCards}
           onCardClick={onOfferedCardClick}/>
       </div>
     )
@@ -63,7 +64,9 @@ DiscoverPhase.propTypes = {}
 */
 const mapStateToProps = (state) => {
   return {
-    cards: state.cards,
+    offeredCards: getEnhancedOfferedCards(state),
+    discardPile: state.cards.discardPile,
+    deck: state.cards.deck,
     phases: state.phases,
     activePhase: {
       ...getActivePhase(state),

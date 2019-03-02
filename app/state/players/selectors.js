@@ -1,7 +1,7 @@
 import { createSelector } from 'reselect'
 import { getActivePlayerIndex } from '../phases/selectors'
 import { PERSON_TYPES, CARD_TYPES, BOAT_COLORS } from '../cards/consts/index.js'
-import { getNumberOfOfferedColors } from '../cards/selectors'
+import { getNumberOfOfferedColors, getOfferedCards } from '../cards/selectors'
 
 const enhancePlayer = (player, numberOfOfferedColors) => {
   let influence = 0 //TODO
@@ -106,5 +106,24 @@ export const getNextPlayerIndex =
     }
   )
 
-export const getActiveEnhancedPlayerOfActivePhase =
-  createSelector(getActivePlayerIndex, getEnhancedPlayers, (index, enhancePlayers) => enhancePlayers[index] )
+export const getActiveEnhancedPlayerOfActivePhase = createSelector(getActivePlayerIndex, getEnhancedPlayers, (index, enhancePlayers) => enhancePlayers[index] )
+
+//  I had to move this one here to prevent circular dependency
+//  A possible solution would be to have an enhanced selector
+//  that would include both players and cards.
+export const getEnhancedOfferedCards =
+  createSelector(getOfferedCards, getActiveEnhancedPlayerOfActivePhase,
+    (offeredCards, activePlayer) => offeredCards.map(
+      offeredCard => {
+        const props = { bonus: 0, discount: 0 }
+
+        if(![CARD_TYPES.SHIP, CARD_TYPES.PERSON].includes(offeredCard.type))
+          return offeredCard
+
+        if(offeredCard.type === CARD_TYPES.SHIP)
+          props.bonus += activePlayer.boatColorBonus[offeredCard.color]
+        if(offeredCard.type === CARD_TYPES.PERSON)
+          props.discount += activePlayer.hiringDiscount
+        return { ...offeredCard, ...props }
+      })
+    )
