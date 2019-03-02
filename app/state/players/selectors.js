@@ -86,7 +86,7 @@ export const getPlayersWithMaxDefence = createSelector(getEnhancedPlayers, playe
 })
 
 export const getPlayersWithMinInfluence = createSelector(getEnhancedPlayers, players => {
-  const sortedPlayers = players.sort((a, b) => a.influence - a.influence)
+  const sortedPlayers = players.sort((a, b) => a.influence - b.influence)
   const playersWithMinInfluence = []
   for(let player of sortedPlayers){
     if(!playersWithMinInfluence.length)
