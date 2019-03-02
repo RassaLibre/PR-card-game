@@ -10,9 +10,6 @@ import {
   DISCARD_LAST_OFFERED_CARD
 } from './consts'
 import {
-  getRandomIntBetween
-} from '../../utils'
-import {
   DECK_DEFAULT_STATE
 } from './consts/index.js'
 import shuffleCards from './utils/shuffleCards'

@@ -6,8 +6,6 @@ import {
 } from './consts'
 
 import {
-  getActivePhase,
-  getActivePhaseIndex,
   getTradePhaseActivePlayerIndex,
   getActivePhaseName,
   getDiscoverPhaseActivePlayerIndex

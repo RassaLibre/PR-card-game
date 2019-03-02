@@ -17,7 +17,6 @@ import {
 	TaxCard
 } from "../cards/Card"
 import {
-	TAX_TYPES,
 	CARD_TYPES,
 	PERSON_TYPES
 } from '../../state/cards/consts/index.js'

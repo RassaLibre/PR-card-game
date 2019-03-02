@@ -4,7 +4,6 @@ import { PERSON_TYPES, CARD_TYPES, BOAT_COLORS } from '../cards/consts/index.js'
 import { getNumberOfOfferedColors, getOfferedCards } from '../cards/selectors'
 
 const enhancePlayer = (player, numberOfOfferedColors) => {
-  let influence = 0 //TODO
   let enhancingProps = {
     influence: 0,
     defence: 0,
@@ -21,7 +20,7 @@ const enhancePlayer = (player, numberOfOfferedColors) => {
     return prev
   }, {})
 
-  player.cards.map(card => {
+  player.cards.forEach(card => {
     enhancingProps.influence += card.influence
     if(card.type !== CARD_TYPES.PERSON)
       return null

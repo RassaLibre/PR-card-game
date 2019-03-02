@@ -39,7 +39,7 @@ class Application extends React.Component{
 	*
 	*/
 	render(){
-		const { activePhase, nextStep, phases, players, numOfOfferedCards } = this.props
+		const { activePhase, nextStep, players } = this.props
 		return(
 			<div className="game">
 				<span>current phase: </span>
@@ -79,8 +79,6 @@ Application.propTypes = {};
 const mapStateToProps = (state) => {
 	return {
 		players: getEnhancedPlayers(state),
-		phases: state.phases,
-		numOfOfferedCards: state.cards.offeredCards.length,
 		ac: state.phases.activePhase,
 		activePhase: {
 			...getActivePhase(state),

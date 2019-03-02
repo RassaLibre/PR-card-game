@@ -12,13 +12,8 @@ import {
 import {
   getTopCardOnDeck,
   getDiscardPile,
-  getAmountOfCardsOnDeck,
   getOfferedCards
 } from './selectors'
-
-import {
-  addCoinsToPlayer
-} from '../players/actions'
 
 import gameHooks from '../gameHooks/actions'
 

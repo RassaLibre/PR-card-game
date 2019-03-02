@@ -15,7 +15,7 @@ export const removeCoinsFromPlayer = (playerId, numOfCoins) =>
 
 export const rewardPlayersForFlush = () => (dispatch, getState) => {
   const players = getEnhancedPlayers(getState())
-  players.map(player => {
+  players.forEach(player => {
     if(player.perFlush)
       dispatch(addCoinsToPlayer(player.id, player.perFlush))
   })

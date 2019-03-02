@@ -1,4 +1,3 @@
-import { combineReducers } from 'redux'
 import {
   ADD_COINS_TO_PLAYER,
   REMOVE_COINS_FROM_PLAYER
