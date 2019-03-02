@@ -20,7 +20,7 @@ export const interactWithCardInTradePhase = card => dispatch => {
 }
 
 export const interactWithCardInDiscoverPhase = card => dispatch => {
-  if(confirm('You are about to end the discover phase. Would you like to proceed?')){
+  if(window.confirm('You are about to end the discover phase. Would you like to proceed?')){
     dispatch(next())
     dispatch(interactWithCardInTradePhase(card))
   }

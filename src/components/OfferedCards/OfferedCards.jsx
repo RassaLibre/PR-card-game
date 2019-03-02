@@ -89,9 +89,7 @@ class OfferedCards extends React.PureComponent{
 /**
 *
 */
-OfferedCards.propTypes = {
-	cards: React.PropTypes.array,
-}
+OfferedCards.propTypes = {}
 
 /**
 *

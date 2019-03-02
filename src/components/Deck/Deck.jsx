@@ -1,5 +1,5 @@
-import React from "react";
-import "./_Deck.scss";
+import React from "react"
+import "./_Deck.scss"
 
 /**
 *
@@ -10,11 +10,11 @@ class Deck extends React.PureComponent{
 	*
 	*/
 	constructor(args){
-		super(args);
-		this.state = { showDialog: false };
-		this.handleClick = this.handleClick.bind(this);
-		this.handleMouseOver = this.handleMouseOver.bind(this);
-		this.handleMouseOut = this.handleMouseOut.bind(this);
+		super(args)
+		this.state = { showDialog: false }
+		this.handleClick = this.handleClick.bind(this)
+		this.handleMouseOver = this.handleMouseOver.bind(this)
+		this.handleMouseOut = this.handleMouseOut.bind(this)
 	}
 
 	/**
@@ -56,7 +56,7 @@ class Deck extends React.PureComponent{
 						<span>(click to draw a card)</span>
 					: undefined}
 			</div>
-		);
+		)
 	}
 
 }
@@ -66,16 +66,14 @@ class Deck extends React.PureComponent{
 */
 Deck.defaultProps = {
 	onClick: undefined
-};
+}
 
 /**
 *
 */
-Deck.propTypes = {
-	onClick: React.PropTypes.func
-};
+Deck.propTypes = {}
 
 /**
 *
 */
-export default Deck;
+export default Deck

@@ -26,9 +26,7 @@ class Card extends React.PureComponent{
 
 }
 
-Card.propTypes = {
-	onClick: React.PropTypes.func
-}
+Card.propTypes = {}
 
 /**
 *

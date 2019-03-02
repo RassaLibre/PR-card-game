@@ -25,7 +25,7 @@ import {
 /**
 *
 */
-class App extends React.Component{
+class Application extends React.Component{
 
 	/**
 	*
@@ -66,12 +66,12 @@ class App extends React.Component{
 /**
 *
 */
-App.defaultProps = {};
+Application.defaultProps = {};
 
 /**
 *
 */
-App.propTypes = {};
+Application.propTypes = {};
 
 /**
 *
@@ -98,4 +98,4 @@ const mapDispatchToProps = (dispatch) => {
 /**
 *
 */
-export default connect(mapStateToProps, mapDispatchToProps)(App);
+export default connect(mapStateToProps, mapDispatchToProps)(Application);

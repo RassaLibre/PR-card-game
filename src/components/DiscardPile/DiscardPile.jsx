@@ -1,5 +1,5 @@
-import React from "react";
-import "./_DiscardPile.scss";
+import React from "react"
+import "./_DiscardPile.scss"
 
 /**
 *
@@ -10,8 +10,8 @@ class DiscardPile extends React.PureComponent{
 	*
 	*/
 	constructor(args){
-		super(args);
-		this.state = {};
+		super(args)
+		this.state = {}
 	}
 
 	/**
@@ -24,7 +24,7 @@ class DiscardPile extends React.PureComponent{
 				<span className="discardPile__title">Discard pile</span>
 				<span>{cards.length + " cards"}</span>
 			</div>
-		);
+		)
 	}
 
 }
@@ -34,16 +34,14 @@ class DiscardPile extends React.PureComponent{
 */
 DiscardPile.defaultProps = {
 	cards: []
-};
+}
 
 /**
 *
 */
-DiscardPile.propTypes = {
-	cards: React.PropTypes.array
-};
+DiscardPile.propTypes = {}
 
 /**
 *
 */
-export default DiscardPile;
+export default DiscardPile
