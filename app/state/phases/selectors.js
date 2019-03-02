@@ -1,4 +1,5 @@
-import { createSelector } from "reselect";
+import { createSelector } from "reselect"
+import { PHASES } from './consts'
 
 /**
 *
@@ -26,7 +27,7 @@ export const getTradePhaseActivePlayerIndex = (state) => state.phases.tradePhase
 * @return {Object}
 */
 export const getActivePhase = createSelector([ getPhases ], (phases)=>{
-  if(phases.activePhase === 0) return phases.discoverPhase
+  if(phases.activePhase === PHASES.DISCOVER) return phases.discoverPhase
   else return phases.tradePhase
 })
 
