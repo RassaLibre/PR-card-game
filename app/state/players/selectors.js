@@ -1,6 +1,6 @@
 import { createSelector } from 'reselect'
 import { getActivePlayerIndex } from '../phases/selectors'
-import { PERSON_TYPES, CARD_TYPES } from '../cards/consts/index.js'
+import { PERSON_TYPES, CARD_TYPES, BOAT_COLORS } from '../cards/consts/index.js'
 import { getNumberOfOfferedColors } from '../cards/selectors'
 
 const enhancePlayer = (player, numberOfOfferedColors) => {
@@ -14,11 +14,21 @@ const enhancePlayer = (player, numberOfOfferedColors) => {
     fiveAndMoreOfferedBonus: 0,
     twoOrTreeOfferedBonus: 0
   }
+
+  //  Calculate the bonus related to traders
+  let boatColorBonus = Object.values(BOAT_COLORS).reduce((prev, bc) => {
+    prev[bc] = 0
+    return prev
+  }, {})
+
   player.cards.map(card => {
     enhancingProps.influence += card.influence
     if(card.type !== CARD_TYPES.PERSON)
       return null
     switch(card.name){
+      case PERSON_TYPES.TRADER:
+        boatColorBonus[card.color] += 1
+        break
       case PERSON_TYPES.MADAM:
         enhancingProps.hiringDiscount += 1
         break
@@ -46,7 +56,7 @@ const enhancePlayer = (player, numberOfOfferedColors) => {
     if(numberOfOfferedColors === 5)
       enhancingProps.turnsInDiscoverPhase += 2
   })
-  return { ...player, ...enhancingProps }
+  return { ...player, ...enhancingProps, boatColorBonus }
 }
 
 export const getPlayers = state => state.players
