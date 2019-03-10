@@ -10,7 +10,8 @@ export const BOAT_COLORS = {
 export const SIGNS = {
   ANCHOR: "anchor",
   CROSS: "cross",
-  HOUSE: "house"
+  HOUSE: "house",
+  ANY: "any"
 }
 
 export const CARD_TYPES = {
@@ -112,27 +113,27 @@ export const DECK_DEFAULT_STATE = [
   {name: PERSON_TYPES.TRADER, type: CARD_TYPES.PERSON, influence: 1, price: 3, color: BOAT_COLORS.GREEN},
   {name: PERSON_TYPES.TRADER, type: CARD_TYPES.PERSON, influence: 1, price: 3, color: BOAT_COLORS.GREEN},
 
-  {name: PERSON_TYPES.SETTLER, "type": CARD_TYPES.PERSON, influence: 1, price: 4},
-  {name: PERSON_TYPES.SETTLER, "type": CARD_TYPES.PERSON, influence: 1, price: 4},
-  {name: PERSON_TYPES.SETTLER, "type": CARD_TYPES.PERSON, influence: 1, price: 4},
-  {name: PERSON_TYPES.SETTLER, "type": CARD_TYPES.PERSON, influence: 1, price: 4},
-  {name: PERSON_TYPES.SETTLER, "type": CARD_TYPES.PERSON, influence: 1, price: 4},
+  {name: PERSON_TYPES.SETTLER, "type": CARD_TYPES.PERSON, influence: 1, price: 4, sign: SIGNS.HOUSE},
+  {name: PERSON_TYPES.SETTLER, "type": CARD_TYPES.PERSON, influence: 1, price: 4, sign: SIGNS.HOUSE},
+  {name: PERSON_TYPES.SETTLER, "type": CARD_TYPES.PERSON, influence: 1, price: 4, sign: SIGNS.HOUSE},
+  {name: PERSON_TYPES.SETTLER, "type": CARD_TYPES.PERSON, influence: 1, price: 4, sign: SIGNS.HOUSE},
+  {name: PERSON_TYPES.SETTLER, "type": CARD_TYPES.PERSON, influence: 1, price: 4, sign: SIGNS.HOUSE},
 
-  {name: PERSON_TYPES.CAPTAIN, "type": CARD_TYPES.PERSON, influence: 1, price: 4},
-  {name: PERSON_TYPES.CAPTAIN, "type": CARD_TYPES.PERSON, influence: 1, price: 4},
-  {name: PERSON_TYPES.CAPTAIN, "type": CARD_TYPES.PERSON, influence: 1, price: 4},
-  {name: PERSON_TYPES.CAPTAIN, "type": CARD_TYPES.PERSON, influence: 1, price: 4},
-  {name: PERSON_TYPES.CAPTAIN, "type": CARD_TYPES.PERSON, influence: 1, price: 4},
+  {name: PERSON_TYPES.CAPTAIN, "type": CARD_TYPES.PERSON, influence: 1, price: 4, sign: SIGNS.ANCHOR},
+  {name: PERSON_TYPES.CAPTAIN, "type": CARD_TYPES.PERSON, influence: 1, price: 4, sign: SIGNS.ANCHOR},
+  {name: PERSON_TYPES.CAPTAIN, "type": CARD_TYPES.PERSON, influence: 1, price: 4, sign: SIGNS.ANCHOR},
+  {name: PERSON_TYPES.CAPTAIN, "type": CARD_TYPES.PERSON, influence: 1, price: 4, sign: SIGNS.ANCHOR},
+  {name: PERSON_TYPES.CAPTAIN, "type": CARD_TYPES.PERSON, influence: 1, price: 4, sign: SIGNS.ANCHOR},
 
-  {name: PERSON_TYPES.MONK, "type": CARD_TYPES.PERSON, influence: 1, price: 4},
-  {name: PERSON_TYPES.MONK, "type": CARD_TYPES.PERSON, influence: 1, price: 4},
-  {name: PERSON_TYPES.MONK, "type": CARD_TYPES.PERSON, influence: 1, price: 4},
-  {name: PERSON_TYPES.MONK, "type": CARD_TYPES.PERSON, influence: 1, price: 4},
-  {name: PERSON_TYPES.MONK, "type": CARD_TYPES.PERSON, influence: 1, price: 4},
+  {name: PERSON_TYPES.MONK, "type": CARD_TYPES.PERSON, influence: 1, price: 4, sign: SIGNS.CROSS},
+  {name: PERSON_TYPES.MONK, "type": CARD_TYPES.PERSON, influence: 1, price: 4, sign: SIGNS.CROSS},
+  {name: PERSON_TYPES.MONK, "type": CARD_TYPES.PERSON, influence: 1, price: 4, sign: SIGNS.CROSS},
+  {name: PERSON_TYPES.MONK, "type": CARD_TYPES.PERSON, influence: 1, price: 4, sign: SIGNS.CROSS},
+  {name: PERSON_TYPES.MONK, "type": CARD_TYPES.PERSON, influence: 1, price: 4, sign: SIGNS.CROSS},
 
-  {name: PERSON_TYPES.HANDYMAN, "type": CARD_TYPES.PERSON, influence: 1, price: 6},
-  {name: PERSON_TYPES.HANDYMAN, "type": CARD_TYPES.PERSON, influence: 1, price: 6},
-  {name: PERSON_TYPES.HANDYMAN, "type": CARD_TYPES.PERSON, influence: 1, price: 6},
+  {name: PERSON_TYPES.HANDYMAN, "type": CARD_TYPES.PERSON, influence: 1, price: 6, sign: SIGNS.ANY},
+  {name: PERSON_TYPES.HANDYMAN, "type": CARD_TYPES.PERSON, influence: 1, price: 6, sign: SIGNS.ANY},
+  {name: PERSON_TYPES.HANDYMAN, "type": CARD_TYPES.PERSON, influence: 1, price: 6, sign: SIGNS.ANY},
 
   {name: PERSON_TYPES.SAILOR, "type": CARD_TYPES.PERSON, defence: 1, influence: 1, price: 3},
   {name: PERSON_TYPES.SAILOR, "type": CARD_TYPES.PERSON, defence: 1, influence: 1, price: 3},
