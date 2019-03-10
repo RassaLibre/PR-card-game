@@ -6,7 +6,7 @@ import {
   emptyDiscardPile,
   removeTopCardFromDeck,
   moveTopCardToDiscardPile,
-  moveOfferedCardsToDiscardPile,
+  moveAllOfferedCardsToDiscardPile,
   emptyOfferedCards,
   moveDiscardPileToDeck
 } from '../actions'
@@ -84,7 +84,7 @@ describe("Cards actions", ()=>{
     cards.map(card => store.dispatch({ type: OFFER_CARD, card }))
     const discardPile = getDiscardPile(store.getState())
     const offeredCards = getOfferedCards(store.getState())
-    moveOfferedCardsToDiscardPile()(store.dispatch, store.getState)
+    moveAllOfferedCardsToDiscardPile()(store.dispatch, store.getState)
     const newDiscardPile = getDiscardPile(store.getState())
     const newOfferedCards = getOfferedCards(store.getState())
     expect(newOfferedCards.length).toBe(0)

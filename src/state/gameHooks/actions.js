@@ -7,8 +7,8 @@
 */
 
 import {
-  moveOfferedCardsToDiscardPile,
   discardLastOfferedCard
+  moveAllOfferedCardsToDiscardPile,
 } from '../cards/actions'
 import {
   endDiscoverPhaseAbruptly

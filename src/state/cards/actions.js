@@ -37,7 +37,7 @@ export const moveTopCardToDiscardPile = () => (dispatch, getState) => {
   dispatch(removeTopCardFromDeck())
 }
 
-export const moveOfferedCardsToDiscardPile = () => (dispatch, getState) => {
+export const moveAllOfferedCardsToDiscardPile = () => (dispatch, getState) => {
   dispatch(addCardsToDiscardPile(getOfferedCards(getState())))
   dispatch(emptyOfferedCards())
 }
