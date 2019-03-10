@@ -7,7 +7,9 @@ import {
   ADD_CARDS_TO_DECK,
   SHUFFLE_DECK,
   EMPTY_DISCARD_PILE,
-  DISCARD_LAST_OFFERED_CARD
+  DISCARD_LAST_OFFERED_CARD,
+  REMOVE_OFFERED_CARD,
+  DESTROY_OFFERED_CARD
 } from './consts'
 import {
   DECK_DEFAULT_STATE
@@ -40,12 +42,16 @@ const discardPile = (state = [], action) => {
 
 const offeredCards = (state = [], action) => {
   switch(action.type){
+    case REMOVE_OFFERED_CARD:
+      return state.filter(card => card !== action.card)
     case DISCARD_LAST_OFFERED_CARD:
       return [...state.slice(0, -1)]
     case EMPTY_OFFERED_CARDS:
       return []
     case OFFER_CARD:
       return [ ...state, action.card ]
+    case DESTROY_OFFERED_CARD:
+      return state.filter(card => card !== action.card)
     default:
       return state
   }

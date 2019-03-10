@@ -6,7 +6,9 @@ import {
   ADD_CARDS_TO_DECK,
   SHUFFLE_DECK,
   EMPTY_DISCARD_PILE,
-  DISCARD_LAST_OFFERED_CARD
+  DISCARD_LAST_OFFERED_CARD,
+  REMOVE_OFFERED_CARD,
+  DESTROY_OFFERED_CARD
 } from './consts'
 
 import {
@@ -18,6 +20,8 @@ import {
 import gameHooks from '../gameHooks/actions'
 
 export const emptyOfferedCards = () => ({ type: EMPTY_OFFERED_CARDS })
+
+export const removeOfferedCard = card => ({ type: REMOVE_OFFERED_CARD, card })
 
 export const addCardsToDiscardPile = cards => ({ type: ADD_CARDS_TO_DISCARD_PILE, cards })
 
@@ -31,10 +35,17 @@ export const emptyDiscardPile = () => ({ type: EMPTY_DISCARD_PILE })
 
 export const removeTopCardFromDeck = () => ({ type: REMOVE_TOP_CARD_FROM_DECK })
 
+export const destroyOfferedCard = card => ({ type: DESTROY_OFFERED_CARD, card })
+
 export const moveTopCardToDiscardPile = () => (dispatch, getState) => {
   const topCard = getTopCardOnDeck(getState())
   dispatch(addCardsToDiscardPile([topCard]))
   dispatch(removeTopCardFromDeck())
+}
+
+export const moveOfferedCardToDiscardPile = card => dispatch => {
+  dispatch(addCardsToDiscardPile([card]))
+  dispatch(removeOfferedCard(card))
 }
 
 export const moveAllOfferedCardsToDiscardPile = () => (dispatch, getState) => {
