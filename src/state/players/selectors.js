@@ -1,5 +1,9 @@
 import { createSelector } from 'reselect'
-import { getActivePlayerIndex } from '../phases/selectors'
+import {
+  getActivePlayerIndex,
+  getDiscoverPhaseActivePlayerIndex,
+  getTradePhaseActivePlayerIndex,
+} from '../phases/selectors'
 import { PERSON_TYPES, CARD_TYPES, BOAT_COLORS } from '../cards/consts/index.js'
 import { getNumberOfOfferedColors, getOfferedCards } from '../cards/selectors'
 
@@ -7,7 +11,7 @@ const enhancePlayer = (player, numberOfOfferedColors) => {
   let enhancingProps = {
     influence: 0,
     defence: 0,
-    turnsInDiscoverPhase: 1,
+    turnsInTradePhase: 1,
     perFlush: 0,
     hiringDiscount: 0,
     fiveAndMoreOfferedBonus: 0,
@@ -41,7 +45,7 @@ const enhancePlayer = (player, numberOfOfferedColors) => {
         enhancingProps.fiveAndMoreOfferedBonus += 2
         break
       case PERSON_TYPES.GOVERNOR:
-        enhancingProps.turnsInDiscoverPhase += 1
+        enhancingProps.turnsInTradePhase += 1
         break
       case PERSON_TYPES.SAILOR:
       case PERSON_TYPES.PIRATE:
@@ -51,9 +55,9 @@ const enhancePlayer = (player, numberOfOfferedColors) => {
         break
     }
     if(numberOfOfferedColors === 4)
-      enhancingProps.turnsInDiscoverPhase += 1
+      enhancingProps.turnsInTradePhase += 1
     if(numberOfOfferedColors === 5)
-      enhancingProps.turnsInDiscoverPhase += 2
+      enhancingProps.turnsInTradePhase += 2
   })
   return { ...player, ...enhancingProps, boatColorBonus }
 }
@@ -105,7 +109,20 @@ export const getNextPlayerIndex =
     }
   )
 
-export const getActiveEnhancedPlayerOfActivePhase = createSelector(getActivePlayerIndex, getEnhancedPlayers, (index, enhancePlayers) => enhancePlayers[index] )
+export const getActiveEnhancedPlayerOfActivePhase =
+  createSelector(getActivePlayerIndex, getEnhancedPlayers,
+    (index, enhancePlayers) => enhancePlayers[index]
+  )
+
+export const getActiveEnhancedPlayerOfDiscoverPhase =
+  createSelector(getDiscoverPhaseActivePlayerIndex, getEnhancedPlayers,
+    (activeDiscoverPlayerIndex, enhancedPlayers) => enhancedPlayers[activeDiscoverPlayerIndex]
+  )
+
+export const getActiveEnhancedPlayerOfTradePhase =
+  createSelector(getTradePhaseActivePlayerIndex, getEnhancedPlayers,
+    (activeTradePlayerIndex, enhancedPlayers) => enhancedPlayers[activeTradePlayerIndex]
+  )
 
 //  I had to move this one here to prevent circular dependency
 //  A possible solution would be to have an enhanced selector
@@ -114,15 +131,17 @@ export const getEnhancedOfferedCards =
   createSelector(getOfferedCards, getActiveEnhancedPlayerOfActivePhase,
     (offeredCards, activePlayer) => offeredCards.map(
       offeredCard => {
-        const props = { bonus: 0, discount: 0 }
+        const props = { bonus: 0, discount: 0, canInteract: false }
 
         if(![CARD_TYPES.SHIP, CARD_TYPES.PERSON].includes(offeredCard.type))
           return offeredCard
 
         if(offeredCard.type === CARD_TYPES.SHIP)
           props.bonus += activePlayer.boatColorBonus[offeredCard.color]
+
         if(offeredCard.type === CARD_TYPES.PERSON)
           props.discount += activePlayer.hiringDiscount
+
         return { ...offeredCard, ...props }
       })
     )
