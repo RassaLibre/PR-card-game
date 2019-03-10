@@ -2,7 +2,9 @@ import {
   TOGGLE_PHASE,
   SET_TRADE_PHASE_ACTIVE_PLAYER,
   SET_DISCOVER_PHASE_ACTIVE_PLAYER,
-  PHASES
+  PHASES,
+  INCREMENT_ACTIVE_CARDS_PLAYED,
+  SET_CARDS_PLAYED_IN_TRADE_PHASE
 } from './consts'
 
 import {
@@ -24,22 +26,20 @@ import {
   newPlayerInTradingPhase,
 } from '../gameHooks/actions'
 
-/**
-* @tested
-*/
-export const togglePhase = () => ({ type: TOGGLE_PHASE })
+export const togglePhase = () =>
+  ({ type: TOGGLE_PHASE })
 
-/**
-* @tested
-*/
+export const incrementCardsPlayedInTradePhase = () =>
+  ({ type: INCREMENT_ACTIVE_CARDS_PLAYED })
+
 export const setTradePhaseActivePlayer = playerIndex =>
   ({ type: SET_TRADE_PHASE_ACTIVE_PLAYER, playerIndex })
 
-/**
-* @tested
-*/
 export const setDiscoverPhaseActivePlayer = playerIndex =>
   ({ type: SET_DISCOVER_PHASE_ACTIVE_PLAYER, playerIndex })
+
+export const setPlayedCardsInTradingPhase = cardsPlayed =>
+  ({ type: SET_CARDS_PLAYED_IN_TRADE_PHASE, value: cardsPlayed })
 
 /**
 * Gets triggered when the player has offered a new boat on an
