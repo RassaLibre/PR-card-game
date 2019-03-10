@@ -12,7 +12,7 @@ export default class Player extends React.PureComponent{
 			influence,
 			color,
 			name,
-			turnsInDiscoverPhase,
+			turnsInTradePhase,
 			perFlush,
 			hiringDiscount,
 			fiveAndMoreOfferedBonus,
@@ -23,14 +23,14 @@ export default class Player extends React.PureComponent{
 			<div className="player" style={{backgroundColor: color}}>
 				<h1 className="player__name">{name}</h1>
 				<ul>
-					<li>{coins + " coins"}</li>
-					<li>{defence + " defence"}</li>
-					<li>{influence + " influence"}</li>
-					<li>{turnsInDiscoverPhase + " turns in discover phase"}</li>
-					<li>{perFlush + " per flush"}</li>
-					<li>{hiringDiscount + " hiring discount"}</li>
-					<li>{twoOrTreeOfferedBonus + " bonus when offering 2-3"}</li>
-					<li>{fiveAndMoreOfferedBonus + " bonus when offering 5+"}</li>
+					<li>{`${coins} coins`}</li>
+					<li>{`${defence} defence`}</li>
+					<li>{`${influence} influence`}</li>
+					<li>{`${turnsInTradePhase} turns in trade phase`}</li>
+					<li>{`${perFlush} coins per flush`}</li>
+					<li>{`${hiringDiscount} coins hiring discount`}</li>
+					<li>{`${twoOrTreeOfferedBonus} bonus when offering 2-3`}</li>
+					<li>{`${fiveAndMoreOfferedBonus}  bonus when offering 5+`}</li>
 				</ul>
 				{isActive ? <p>Active!</p> : undefined}
 			</div>
