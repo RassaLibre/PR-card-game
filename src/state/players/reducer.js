@@ -63,7 +63,10 @@ const listOfPlayers = (state = PLAYERS_DEFAULT_STATE, action) => {
       if(indexOfPlayer > -1){
         return[
           ...state.slice(0, indexOfPlayer),
-          { ...state[indexOfPlayer], cards: state[indexOfPlayer].cards.filter(c => c !== card) },
+          {
+            ...state[indexOfPlayer],
+            cards: state[indexOfPlayer].cards.filter(c => c.id !== card.id)
+          },
           ...state.slice(indexOfPlayer + 1)
         ]
       }

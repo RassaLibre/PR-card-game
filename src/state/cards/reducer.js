@@ -43,7 +43,7 @@ const discardPile = (state = [], action) => {
 const offeredCards = (state = [], action) => {
   switch(action.type){
     case REMOVE_OFFERED_CARD:
-      return state.filter(card => card !== action.card)
+      return state.filter(card => card.id !== action.card.id)
     case DISCARD_LAST_OFFERED_CARD:
       return [...state.slice(0, -1)]
     case EMPTY_OFFERED_CARDS:
@@ -51,7 +51,7 @@ const offeredCards = (state = [], action) => {
     case OFFER_CARD:
       return [ ...state, action.card ]
     case DESTROY_OFFERED_CARD:
-      return state.filter(card => card !== action.card)
+      return state.filter(card => card.id !== action.card.id)
     default:
       return state
   }
