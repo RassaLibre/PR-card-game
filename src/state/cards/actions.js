@@ -14,7 +14,8 @@ import {
 import {
   getTopCardOnDeck,
   getDiscardPile,
-  getOfferedCards
+  getOfferedCards,
+  getLastOfferedCard
 } from './selectors'
 
 import gameHooks from '../gameHooks/actions'
@@ -35,6 +36,10 @@ export const emptyDiscardPile = () => ({ type: EMPTY_DISCARD_PILE })
 
 export const removeTopCardFromDeck = () => ({ type: REMOVE_TOP_CARD_FROM_DECK })
 
+/**
+* Completely remove this card from the game. This function should NOT be called
+* on its own if the card has not been copied for example to a player before.
+*/
 export const destroyOfferedCard = card => ({ type: DESTROY_OFFERED_CARD, card })
 
 export const moveTopCardToDiscardPile = () => (dispatch, getState) => {
@@ -66,5 +71,8 @@ export const offerTopFromDeck = () => (dispatch, getState) => {
   dispatch(gameHooks.cardOffered(card))
 }
 
-export const discardLastOfferedCard = dispatch =>
+export const discardLastOfferedCard = (dispatch, getState) => {
+  const lastOffered = getLastOfferedCard(getState())
+  dispatch(addCardsToDiscardPile([lastOffered]))
   dispatch({ type: DISCARD_LAST_OFFERED_CARD })
+}
