@@ -22,7 +22,10 @@ const listOfPlayers = (state = PLAYERS_DEFAULT_STATE, action) => {
       if(indexOfPlayer > -1){
         return [
           ...state.slice(0, indexOfPlayer),
-          {...state[indexOfPlayer], coins: state[indexOfPlayer].coins + numOfCoins},
+          {
+            ...state[indexOfPlayer],
+            coins: state[indexOfPlayer].coins + numOfCoins
+          },
           ...state.slice(indexOfPlayer + 1)
         ]
       }
@@ -36,7 +39,10 @@ const listOfPlayers = (state = PLAYERS_DEFAULT_STATE, action) => {
       if(indexOfPlayer > -1){
         return [
           ...state.slice(0, indexOfPlayer),
-          {...state[indexOfPlayer], coins: state[indexOfPlayer].coins - numOfCoins},
+          {
+            ...state[indexOfPlayer],
+            coins: state[indexOfPlayer].coins - numOfCoins
+          },
           ...state.slice(indexOfPlayer + 1)
         ]
       }
@@ -50,7 +56,10 @@ const listOfPlayers = (state = PLAYERS_DEFAULT_STATE, action) => {
       if(indexOfPlayer > -1){
         return[
           ...state.slice(0, indexOfPlayer),
-          { ...state[indexOfPlayer], cards: [ state[indexOfPlayer].cards, card ] },
+          {
+            ...state[indexOfPlayer],
+            cards: [ state[indexOfPlayer].cards, card ]
+          },
           ...state.slice(indexOfPlayer + 1)
         ]
       }
