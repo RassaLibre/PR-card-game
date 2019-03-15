@@ -8,12 +8,17 @@ import {
   moveTopCardToDiscardPile,
   moveAllOfferedCardsToDiscardPile,
   emptyOfferedCards,
-  moveDiscardPileToDeck
+  moveDiscardPileToDeck,
+  moveOfferedCardToDiscardPile,
+  destroyOfferedCard,
+  discardLastOfferedCard
 } from '../actions'
 
 import {
   ADD_CARDS_TO_DISCARD_PILE,
-  OFFER_CARD
+  OFFER_CARD,
+  EMPTY_DISCARD_PILE,
+  EMPTY_OFFERED_CARDS,
 } from '../consts'
 
 import {
@@ -24,16 +29,18 @@ import {
 
 describe("Cards actions", ()=>{
 
-  let store;
+  let store
   const cards = [
-    {name: "handyman", "type": "person", influence: 1, price: 6},
-    {name: "sailor", "type": "person", defence: 1, influence: 2, price: 7},
-    {name: "pirate", "type": "person", defence: 2, influence: 2, price: 7}
+    { id: 1, name: "handyman", "type": "person", influence: 1, price: 6},
+    { id: 2, name: "sailor", "type": "person", defence: 1, influence: 2, price: 7},
+    { id: 3, name: "pirate", "type": "person", defence: 2, influence: 2, price: 7}
   ];
 
 
-  beforeAll(()=>{
+  beforeEach(()=>{
     store = RootReducer
+    store.dispatch({ type: EMPTY_DISCARD_PILE })
+    store.dispatch({ type: EMPTY_OFFERED_CARDS })
   })
 
   it("should add cards to discard pile", ()=>{
@@ -110,6 +117,37 @@ describe("Cards actions", ()=>{
     const newDeck = getDeck(store.getState())
     expect(newDiscardPile.length).toBe(0);
     expect(newDeck.length).toBe(deck.length + discardPile.length)
+  })
+
+  it("should move offered card to discard pile", () => {
+    //to make sure there are some offered cards
+    cards.map(card => store.dispatch({ type: OFFER_CARD, card }))
+    moveOfferedCardToDiscardPile(cards[2])(store.dispatch)
+    const newOfferedCards = getOfferedCards(store.getState())
+    const newDiscardPile = getDiscardPile(store.getState())
+    expect(newOfferedCards.find(c => c.id === cards[2].id)).toBeUndefined()
+    expect(newDiscardPile.find(c => c.id === cards[2].id)).toBe(cards[2])
+  })
+
+  it('should completely remove the card from the game', () => {
+    //to make sure there are some offered cards
+    cards.map(card => store.dispatch({ type: OFFER_CARD, card }))
+    store.dispatch(destroyOfferedCard(cards[1]))
+    const newOfferedCards = getOfferedCards(store.getState())
+    expect(newOfferedCards.find(c => c.id === cards[1].id)).toBeUndefined()
+  })
+
+  it('should discard last offered card', () => {
+    const lastOffered = cards[cards.length - 1]
+    //to make sure there are some offered cards
+    cards.map(card => store.dispatch({ type: OFFER_CARD, card }))
+    const offeredCards = getOfferedCards(store.getState())
+    discardLastOfferedCard(store.dispatch, store.getState)
+    const newOfferedCards = getOfferedCards(store.getState())
+    const newDiscardPile = getDiscardPile(store.getState())
+    expect(newOfferedCards[newOfferedCards.length - 1]).toBe(offeredCards[offeredCards.length - 2])
+    expect(newOfferedCards.find(c => c.id === lastOffered.id)).toBeUndefined()
+    expect(newDiscardPile[newDiscardPile.length - 1]).toBe(lastOffered)
   })
 
 })
