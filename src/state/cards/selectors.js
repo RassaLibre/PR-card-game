@@ -7,6 +7,8 @@ export const getOfferedCards = state => state.cards.offeredCards
 
 export const getDiscardPile = state => state.cards.discardPile
 
+export const getLastOfferedCard = createSelector(getOfferedCards, cards => cards[cards.length - 1])
+
 export const getTopCardOnDeck = createSelector(getDeck, deck => deck[0])
 
 export const getAmountOfCardsOnDeck = createSelector(getDeck, deck => deck.length)
