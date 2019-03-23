@@ -58,10 +58,9 @@ describe('getEnhancedOfferedCards', () => {
     expect(taxCard.bonus).toBeUndefined()
   })
 
-  it('should not attach props to expedition cards', () => {
+  it('should attach canInteract to expedition cards', () => {
     const expeditionCard = enhancedOfferedCards.find(c => c.type === CARD_TYPES.EXPEDITION)
-    expect(expeditionCard.discount).toBeUndefined()
-    expect(expeditionCard.bonus).toBeUndefined()
+    expect(expeditionCard.canInteract).toBeDefined()
   })
 
 })

@@ -62,6 +62,36 @@ const enhancePlayer = (player, numberOfOfferedColors) => {
   return { ...player, ...enhancingProps, boatColorBonus }
 }
 
+const getCardsTotalPrice = ({ price = 0, discount = 0, tax = 0 }) => price - discount + tax
+
+const hasAllSymbols = (player, expeditionCard) => {
+  const requiredSigns = expeditionCard.signs
+  player.cards.map(playersCard => {
+    if(playersCard.type === CARD_TYPES.PERSON && requiredSigns.includes(playersCard.sign)){
+      const index = requiredSigns.indexOf(playersCard.sign)
+      requiredSigns.splice(index, 1)
+    }
+  })
+  if(!requiredSigns.length) return true
+  const numberOfHandymen = player.cards
+    .filter(card => card.type === CARD_TYPES.PERSON && card.name === PERSON_TYPES.HANDYMAN)
+    .length
+  if(numberOfHandymen >= requiredSigns.length) return true
+  else return false
+}
+
+const isAffordableForPlayer = (player, card) => {
+  switch(card.type){
+    case CARD_TYPES.PERSON:
+    case CARD_TYPES.SHIP:
+      return player.coins >= getCardsTotalPrice(card)
+    case CARD_TYPES.EXPEDITION:
+      return hasAllSymbols(player, card)
+    default:
+      throw new Error(`Unknown card type in affordibility calculation ${card.type}`)
+  }
+}
+
 export const getPlayers = state => state.players
 
 export const getEnhancedPlayers =
@@ -128,20 +158,33 @@ export const getActiveEnhancedPlayerOfTradePhase =
 //  A possible solution would be to have an enhanced selector
 //  that would include both players and cards.
 export const getEnhancedOfferedCards =
-  createSelector(getOfferedCards, getActiveEnhancedPlayerOfActivePhase,
-    (offeredCards, activePlayer) => offeredCards.map(
+  createSelector(
+    getOfferedCards,
+    getActiveEnhancedPlayerOfActivePhase,
+    getActiveEnhancedPlayerOfDiscoverPhase,
+    (offeredCards, activePlayer, activeDiscoverPhasePlayer) => offeredCards.map(
       offeredCard => {
-        const props = { bonus: 0, discount: 0, canInteract: false }
 
-        if(![CARD_TYPES.SHIP, CARD_TYPES.PERSON].includes(offeredCard.type))
+        if(offeredCard.type === CARD_TYPES.TAX)
           return offeredCard
 
+        offeredCard = { ...offeredCard, bonus: 0, discount: 0, tax: 0, canInteract: false }
+
+        //add the bonuses and discounts
         if(offeredCard.type === CARD_TYPES.SHIP)
-          props.bonus += activePlayer.boatColorBonus[offeredCard.color]
+          offeredCard.bonus += activePlayer.boatColorBonus[offeredCard.color]
 
         if(offeredCard.type === CARD_TYPES.PERSON)
-          props.discount += activePlayer.hiringDiscount
+          offeredCard.discount += activePlayer.hiringDiscount
 
-        return { ...offeredCard, ...props }
+        //set the tax if the active player is not the active player in the discover phase
+        if(activePlayer.id !== activeDiscoverPhasePlayer.id)
+          offeredCard.tax = 1
+
+        //calculate the canInteract property
+        if(isAffordableForPlayer(activePlayer, offeredCard))
+          offeredCard.canInteract = true
+
+        return offeredCard
       })
     )
