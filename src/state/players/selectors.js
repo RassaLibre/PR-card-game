@@ -6,7 +6,9 @@ import {
 } from '../phases/selectors'
 import { PERSON_TYPES, CARD_TYPES, BOAT_COLORS } from '../cards/consts/index.js'
 import { getNumberOfOfferedColors, getOfferedCards } from '../cards/selectors'
-
+import getCardsTotalPrice from '../../utils/getCardsTotalPrice'
+import hasAllSymbols from '../../utils/hasAllSymbols'
+import isAffordableForPlayer from '../../utils/isAffordableForPlayer'
 const enhancePlayer = (player, numberOfOfferedColors) => {
   let enhancingProps = {
     influence: 0,
@@ -60,36 +62,6 @@ const enhancePlayer = (player, numberOfOfferedColors) => {
       enhancingProps.turnsInTradePhase += 2
   })
   return { ...player, ...enhancingProps, boatColorBonus }
-}
-
-const getCardsTotalPrice = ({ price = 0, discount = 0, tax = 0 }) => price - discount + tax
-
-const hasAllSymbols = (player, expeditionCard) => {
-  const requiredSigns = expeditionCard.signs
-  player.cards.map(playersCard => {
-    if(playersCard.type === CARD_TYPES.PERSON && requiredSigns.includes(playersCard.sign)){
-      const index = requiredSigns.indexOf(playersCard.sign)
-      requiredSigns.splice(index, 1)
-    }
-  })
-  if(!requiredSigns.length) return true
-  const numberOfHandymen = player.cards
-    .filter(card => card.type === CARD_TYPES.PERSON && card.name === PERSON_TYPES.HANDYMAN)
-    .length
-  if(numberOfHandymen >= requiredSigns.length) return true
-  else return false
-}
-
-const isAffordableForPlayer = (player, card) => {
-  switch(card.type){
-    case CARD_TYPES.PERSON:
-    case CARD_TYPES.SHIP:
-      return player.coins >= getCardsTotalPrice(card)
-    case CARD_TYPES.EXPEDITION:
-      return hasAllSymbols(player, card)
-    default:
-      throw new Error(`Unknown card type in affordibility calculation ${card.type}`)
-  }
 }
 
 export const getPlayers = state => state.players
@@ -165,15 +137,18 @@ export const getEnhancedOfferedCards =
     (offeredCards, activePlayer, activeDiscoverPhasePlayer) => offeredCards.map(
       offeredCard => {
 
+        offeredCard = { ...offeredCard, bonus: 0, discount: 0, tax: 0, canInteract: false }
+
+        //no need to do anything here
         if(offeredCard.type === CARD_TYPES.TAX)
           return offeredCard
 
-        offeredCard = { ...offeredCard, bonus: 0, discount: 0, tax: 0, canInteract: false }
-
-        //add the bonuses and discounts
+        //add bonus, if the active player has a trader of the
+        //same color as the ship
         if(offeredCard.type === CARD_TYPES.SHIP)
           offeredCard.bonus += activePlayer.boatColorBonus[offeredCard.color]
 
+        //if the active player has a hiring discount (for example due to lady)
         if(offeredCard.type === CARD_TYPES.PERSON)
           offeredCard.discount += activePlayer.hiringDiscount
 
