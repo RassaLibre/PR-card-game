@@ -43,6 +43,7 @@ import {
   getActiveEnhancedPlayerOfTradePhase,
 } from '../players/selectors'
 import { CARD_TYPES, TAX_TYPES, SIGNS, PERSON_TYPES } from '../cards/consts/index.js'
+import getCardsTotalPrice from '../../utils/getCardsTotalPrice'
 
 const REWARD_FOR_TAXES = 1
 
@@ -175,14 +176,13 @@ export const playCard = card => (dispatch, getState) => {
 
     case CARD_TYPES.PERSON: {
       // Remove the cost of the card from the player
-      removeCoinsFromPlayer(currentPlayer.id, card.price - card.discount)
+      removeCoinsFromPlayer(currentPlayer.id, getCardsTotalPrice(card))
       // move card to the player
       dispatch(addCardToPlayer(currentPlayer.id, card))
       dispatch(destroyOfferedCard(card))
       // Is the active trade player an active player in the discover phase?
       // If not, give the active DPAP one coin from the TPAP
       if(currentPlayer.id !== activeDiscoverPhasePlayer.id) {
-        dispatch(removeCoinsFromPlayer(currentPlayer.id, TAXES_TO_ACTIVE_PLAYER_WHEN_IN_TRADE_PHASE))
         dispatch(addCoinsToPlayer(activeDiscoverPhasePlayer.id, TAXES_TO_ACTIVE_PLAYER_WHEN_IN_TRADE_PHASE))
       }
       // Increment the counter of played cards
