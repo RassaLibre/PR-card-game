@@ -2,10 +2,30 @@ import {
   getEnhancedOfferedCards,
   getPlayersWithTwelveOrMoreCoins,
   getPlayersWithMinInfluence,
-  getPlayersWithMaxDefence
+  getPlayersWithMaxDefence,
 } from '../selectors'
 import { PHASES } from '../../phases/consts'
 import { PERSON_TYPES, CARD_TYPES, BOAT_COLORS, TAX_TYPES, SIGNS } from '../../cards/consts/index.js'
+
+const ACTIVE_PLAYER_IS_ACTIVE_IN_DISCOVER = {
+    activePhase: PHASES.TRADE,
+    tradePhase: {
+      activePlayerIndex: 0
+    },
+    discoverPhase: {
+      activePlayerIndex: 0
+    }
+}
+
+const ACTIVE_PLAYER_IS_NOT_ACTIVE_IN_DISCOVER = {
+    activePhase: PHASES.TRADE,
+    tradePhase: {
+      activePlayerIndex: 1
+    },
+    discoverPhase: {
+      activePlayerIndex: 0
+    }
+}
 
 const STATE = {
   cards: {
@@ -26,12 +46,7 @@ const STATE = {
     ]},
     { id: 3, name: "Paul", coins: 2, color: "#10DBE8", cards: []},
   ],
-  phases: {
-    activePhase: PHASES.DISCOVER,
-    discoverPhase: {
-      activePlayerIndex: 0
-    }
-  }
+  phases: ACTIVE_PLAYER_IS_ACTIVE_IN_DISCOVER
 }
 
 describe('getEnhancedOfferedCards', () => {
@@ -52,9 +67,18 @@ describe('getEnhancedOfferedCards', () => {
     expect(card.bonus).toBe(1)
   })
 
-  it('should attach canInteract to expedition cards', () => {
-    const expeditionCard = enhancedOfferedCards.find(c => c.type === CARD_TYPES.EXPEDITION)
-    expect(expeditionCard.canInteract).toBeDefined()
+  it('should add a tax of 1 if the AP is not APDP', () => {
+    const eOfferedCards = getEnhancedOfferedCards({ ...STATE, phases: ACTIVE_PLAYER_IS_NOT_ACTIVE_IN_DISCOVER })
+    eOfferedCards.forEach(card => {
+      if([CARD_TYPES.PERSON, CARD_TYPES.SHIP, CARD_TYPES.EXPEDITION].includes(card.type))
+        expect(card.tax).toBe(1)
+    })
+  })
+
+  it('should attach canInteract to all cards', () => {
+    enhancedOfferedCards.forEach(card => {
+      expect(card.canInteract).toBeDefined()
+    })
   })
 
 })
